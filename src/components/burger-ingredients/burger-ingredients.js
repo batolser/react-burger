@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { checkPropTypes } from '../../utils/types'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -9,7 +9,7 @@ import burgerIngredientsStyles from './burger-ingredients.module.css';
 const Tabs = () => {
     const [current, setCurrent] = React.useState('one')
     return (
-      <div style={{ display: 'flex' }} className={burgerIngredientsStyles.tabs}>
+      <div className={burgerIngredientsStyles.tabs}>
         <Tab value="one" active={current === 'one'} onClick={setCurrent}>
         Булки
         </Tab>
@@ -23,63 +23,56 @@ const Tabs = () => {
     )
 }
 
-const cardPropTypes = PropTypes.shape({
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-});
 
-
-
-const Card = (item) => {
+const Card = (props) => {
+  
       return (
         <div className={burgerIngredientsStyles.card}>
           <Counter count={1} size="default" extraClass="m-1" />
-          <img className="card__img" src={item.image} alt="фото." style={{margin: '0 auto'}}/>
+          <img className={burgerIngredientsStyles.img} src={props.image} alt={props.name} />
           <div>
             <div className={burgerIngredientsStyles.price}>
-              <p className='text text_type_digits-default mr-4'>{item.price}</p> 
+              <p className='text text_type_digits-default mr-4'>{props.price}</p> 
               <CurrencyIcon type="primary" />
             </div>
             <h4 className="text text_type_main-default mt-2 mb-6">
-            {item.name}
+            {props.name}
             </h4> 
           </div>
         </div>
       );
     }
-    Card.propTypes = {
-      item: PropTypes.arrayOf.isRequired,
-    };
-
+   
+    // Card.propTypes = {
+    // props: PropTypes.arrayOf(cardPropTypes).isRequired
+    // };
 
     export const BurgerIngredients = ({ ingredients }) => {
   
     return (
       <section className={burgerIngredientsStyles.burger__ingredients}>
         <h1 className="text text_type_main-large mb-5 mt-10">Соберите бургер</h1>
-        <Tabs />
-        
-        <div className={burgerIngredientsStyles.ingredients} style={{ maxWidth: '100%' }}>
-          <h2 className='text text_type_main-medium mb-6' style={{ textAlign: 'start' }}>Булки</h2>
+        <Tabs /> 
+        <div className={burgerIngredientsStyles.ingredients}>
+          <h2 className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6`} >Булки</h2>
           <div className={burgerIngredientsStyles.cards__list}>
             {ingredients.filter(item => item.type === "bun")
-            .map((item, index) => (
-              <Card key={index} {...item} />
+            .map((item) => (
+              <Card key={item._id} {...item} />
             ))}
           </div>
-          <h2 className='text text_type_main-medium mb-6 mt-10' style={{ textAlign: 'start' }}>Соусы</h2> 
+          <h2 className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Соусы</h2> 
           <div className={burgerIngredientsStyles.cards__list}>
             {ingredients.filter(item => item.type === "sauce")
-              .map((item, index) => (
-                <Card key={index} {...item} />
+              .map((item) => (
+                <Card key={item._id} {...item} />
               ))}
           </div>
-          <h2 className='text text_type_main-medium mb-6 mt-10' style={{ textAlign: 'start' }}>Начинки</h2> 
+          <h2 className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Начинки</h2> 
           <div className={burgerIngredientsStyles.cards__list}>
             {ingredients.filter(item => item.type === "main")
-              .map((item, index) => (
-                <Card key={index} {...item} />
+              .map((item) => (
+                <Card key={item._id} {...item} />
               ))}
           </div> 
         </div> 
@@ -92,6 +85,6 @@ const Card = (item) => {
 }
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(cardPropTypes).isRequired
+  ingredients: PropTypes.arrayOf(checkPropTypes).isRequired
 };
 

@@ -33,7 +33,6 @@ class AppHeader extends React.Component {
             <ProfileIcon type="secondary"  />
             <p className="text text_type_main-default ml-2 text_color_inactive">Личный кабинет</p>
         </button>
-        {/* <h1 className={headerStyles.title}>Собачки, следящие за тобой, пока ты изучаешь React</h1> */}
       </header>
     );
   }
