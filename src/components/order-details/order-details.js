@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import orderDetailsStyles from'./order-details.module.css';
 import { DoneIcon } from '../done/done';
 import { orderPropTypes } from '../../utils/types'

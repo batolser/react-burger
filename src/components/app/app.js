@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { AppHeader } from "../header/header";
 import appStyles from './app.module.css';
@@ -37,7 +37,7 @@ const openModal = (e) => {
     modalTitleContent = "Детали ингредиента";
 
   }
-  else if(e.currentTarget.id = 'order'){
+  else if(e.currentTarget.id === 'order'){
     // newPopup = <OrderDetails />
    
     console.log(orders)

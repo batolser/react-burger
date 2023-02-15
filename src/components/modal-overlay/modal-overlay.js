@@ -31,11 +31,11 @@ import modalOverlayStyles from'./modal.module.css';
 // }
 
 
-export const ModalOverlay = ({onClose}) => {
+export const ModalOverlay = ({onClick}) => {
   
     return (
         
-        <div className={modalOverlayStyles.modal__overlay} onClose={onClose}></div>
+        <div className={modalOverlayStyles.modal__overlay} onClick={onClick}></div>
     );
   
 }

@@ -7,12 +7,15 @@ import { ModalOverlay } from "../modal-overlay/modal-overlay"
 
 export default class Modal extends React.Component {
   
+
+
     componentWillMount() {
         const root = document.createElement('div');
     
         root.id = 'react-modals';
         this.root = root;
         document.body.appendChild(this.root);
+      
     }
     componentWillUnmount() {
         document.body.removeChild(this.root);
@@ -20,7 +23,13 @@ export default class Modal extends React.Component {
     render() {
          const { title, children, onClose } = this.props;
 
-
+         const esc = (e) => {
+            if (e.key === "Escape") {
+            onClose()
+          }
+        }
+        
+        document.addEventListener('keydown', esc)
 
         return ReactDOM.createPortal(
             <>

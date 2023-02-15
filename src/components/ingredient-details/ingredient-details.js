@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ingredientDetailsStyles from'./ingredient-details.module.css';
 import { infoCardPropTypes } from '../../utils/types'
 
