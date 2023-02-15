@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { checkPropTypes } from '../../utils/types'
+import { cardPropTypes } from '../../utils/types'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -24,30 +24,30 @@ const Tabs = () => {
 }
 
 
-const Card = (props) => {
-  
+const Card = ({item, onClick}) => {
+
       return (
-        <div className={burgerIngredientsStyles.card}>
+        <div className={burgerIngredientsStyles.card} id={item._id} onClick={onClick}>
           <Counter count={1} size="default" extraClass="m-1" />
-          <img className={burgerIngredientsStyles.img} src={props.image} alt={props.name} />
+          <img className={burgerIngredientsStyles.img} src={item.image} alt={item.name} />
           <div>
             <div className={burgerIngredientsStyles.price}>
-              <p className='text text_type_digits-default mr-4'>{props.price}</p> 
+              <p className='text text_type_digits-default mr-4'>{item.price}</p> 
               <CurrencyIcon type="primary" />
             </div>
             <h4 className="text text_type_main-default mt-2 mb-6">
-            {props.name}
+            {item.name}
             </h4> 
           </div>
         </div>
       );
     }
    
-    // Card.propTypes = {
-    // props: PropTypes.arrayOf(cardPropTypes).isRequired
-    // };
+    Card.propTypes = {
+      item: cardPropTypes.isRequired,
+    };
 
-    export const BurgerIngredients = ({ ingredients }) => {
+    export const BurgerIngredients = ({ ingredients, onClick }) => {
   
     return (
       <section className={burgerIngredientsStyles.burger__ingredients}>
@@ -58,21 +58,21 @@ const Card = (props) => {
           <div className={burgerIngredientsStyles.cards__list}>
             {ingredients.filter(item => item.type === "bun")
             .map((item) => (
-              <Card key={item._id} {...item} />
+              <Card key={item._id} item = {item} onClick={onClick}/>
             ))}
           </div>
           <h2 className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Соусы</h2> 
           <div className={burgerIngredientsStyles.cards__list}>
             {ingredients.filter(item => item.type === "sauce")
               .map((item) => (
-                <Card key={item._id} {...item} />
+                <Card key={item._id} item = {item} onClick={onClick}/>
               ))}
           </div>
           <h2 className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Начинки</h2> 
           <div className={burgerIngredientsStyles.cards__list}>
             {ingredients.filter(item => item.type === "main")
               .map((item) => (
-                <Card key={item._id} {...item} />
+                <Card key={item._id} item = {item} onClick={onClick}/>
               ))}
           </div> 
         </div> 
@@ -80,11 +80,9 @@ const Card = (props) => {
 
       </section>
     );
-
-  
+ 
 }
-
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(checkPropTypes).isRequired
+  ingredients: PropTypes.arrayOf(cardPropTypes).isRequired
 };
 

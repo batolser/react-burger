@@ -6,8 +6,9 @@ import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import headerStyles from './header.module.css';
 
-class AppHeader extends React.Component {
-  render() {
+
+export const AppHeader = () => {
+
     return (
       <header className={headerStyles.header}>
         <nav>
@@ -36,6 +37,3 @@ class AppHeader extends React.Component {
       </header>
     );
   }
-}
-
-export default AppHeader;

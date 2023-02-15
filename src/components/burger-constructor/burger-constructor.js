@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { checkPropTypes } from '../../utils/types'
+import { cardPropTypes } from '../../utils/types'
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerConstructorStyles from './burger-constructor.module.css';
 
 
-    export const BurgerConstructor = ({ ingredients }) => {
+    export const BurgerConstructor = ({ ingredients, onClick }) => {
   
     return (
       <section className={burgerConstructorStyles.burger__constructor}>
@@ -50,7 +50,7 @@ import burgerConstructorStyles from './burger-constructor.module.css';
                 <p className='text text_type_digits-default mr-4'>600</p> 
                 <CurrencyIcon type="primary" />
               </div>
-              <Button htmlType="button" type="primary" size="large">
+              <Button htmlType="button" type="primary" size="large" id="order" onClick={onClick}>
               Оформить заказ
               </Button>
             </div>
@@ -64,6 +64,6 @@ import burgerConstructorStyles from './burger-constructor.module.css';
 
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(checkPropTypes).isRequired
+  ingredients: PropTypes.arrayOf(cardPropTypes).isRequired
 };
 
