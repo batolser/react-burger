@@ -27,7 +27,7 @@ import PropTypes from 'prop-types';
     
   });
 
-  export const orderPropTypes = PropTypes.shape({
-    _id: PropTypes.string.isRequired,
+  // export const orderPropTypes = PropTypes.shape({
+  //   orderNumber: PropTypes.array.isRequired,
     
-  });
+  // });
