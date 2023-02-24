@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { cardPropTypes } from '../../utils/types'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredientsStyles from './burger-ingredients.module.css';
+import { AppContext } from '../../services/appContext';
 
 const Tabs = () => {
   const [current, setCurrent] = React.useState('one')
@@ -46,7 +47,17 @@ Card.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-export const BurgerIngredients = ({ ingredients, onClick }) => {
+export const BurgerIngredients = ({ setChosenIngredient, setIsModalOpen, setModalTitle }) => {
+
+  const { ingredients } = useContext(AppContext);
+
+  const handleOpenIgredientInfoModal = React.useCallback((item) => {
+    setChosenIngredient(item);
+    setModalTitle("Детали ингредиента");
+    setIsModalOpen(true)
+    console.log(item._id)
+  }, [setChosenIngredient, setIsModalOpen, setModalTitle]);
+
   return (
     <section className={burgerIngredientsStyles.burger__ingredients}>
       <h1 className="text text_type_main-large mb-5 mt-10">Соберите бургер</h1>
@@ -56,21 +67,21 @@ export const BurgerIngredients = ({ ingredients, onClick }) => {
         <div className={burgerIngredientsStyles.cards__list}>
           {ingredients.filter(item => item.type === "bun")
             .map((item) => (
-              <Card key={item._id} item={item} onClick={onClick} />
+              <Card key={item._id} item={item} onClick={() => { handleOpenIgredientInfoModal(item) }} />
             ))}
         </div>
         <h2 className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Соусы</h2>
         <div className={burgerIngredientsStyles.cards__list}>
           {ingredients.filter(item => item.type === "sauce")
             .map((item) => (
-              <Card key={item._id} item={item} onClick={onClick} />
+              <Card key={item._id} item={item} onClick={() => { handleOpenIgredientInfoModal(item) }} />
             ))}
         </div>
         <h2 className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Начинки</h2>
         <div className={burgerIngredientsStyles.cards__list}>
           {ingredients.filter(item => item.type === "main")
             .map((item) => (
-              <Card key={item._id} item={item} onClick={onClick} />
+              <Card key={item._id} item={item} onClick={() => { handleOpenIgredientInfoModal(item) }} />
             ))}
         </div>
       </div>
@@ -78,7 +89,9 @@ export const BurgerIngredients = ({ ingredients, onClick }) => {
   );
 }
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(cardPropTypes).isRequired,
-  onClick: PropTypes.func.isRequired
+  setChosenIngredient: PropTypes.func.isRequired,
+  setIsModalOpen: PropTypes.func.isRequired,
+  setModalTitle: PropTypes.func.isRequired,
+
 };
 
