@@ -10,43 +10,34 @@ import { Modal } from "../modal/modal"
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { OrderDetails } from "../order-details/order-details"
 
-export const App = () => {
-  const api = 'https://norma.nomoreparties.space/api/ingredients ';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIngredients } from '../../services/actions/ingredients';
 
-  const [ingredients, setIngredients] = React.useState([]);
+
+export const App = () => {
+
+  const dispatch = useDispatch();
+  const ingredients = useSelector(state => state.ingredients);
+  const order = useSelector(state => state.order);
   const [constructorIngredients, constructorIngredientsState] = React.useState([]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [order, setOrder] = React.useState();
+  // const [order, setOrder] = React.useState();
   const [modalTitle, setModalTitle] = React.useState('');
   const [chosenIngredient, setChosenIngredient] = React.useState(null);
+
+console.log(ingredients);
+console.log(order)
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  React.useEffect(() => {
+  React.useEffect(
+    () => {
+      dispatch(getIngredients());
+    },[dispatch]
+  );
 
-    getingredients();
-
-  }, [])
-
-  const getingredients = () => {
-    fetch(api)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка ${res.status}`);
-      })
-      .then((res) => {
-        setIngredients(res.data);
-        constructorIngredientsState(res.data)
-      })
-
-      .catch((e) => {
-        console.log('error :(((')
-      });
-  };
 
   return (
     <div className="App">
@@ -59,18 +50,18 @@ export const App = () => {
       }
       {isModalOpen && order && (
         <Modal onClose={closeModal}>
-          <OrderDetails order={order} />
+          <OrderDetails/>
         </Modal>
       )
       }
       {ingredients.length &&
         <main className={appStyles.main}>
-          <AppContext.Provider value={{ ingredients, setIngredients }}>
-            <ConstructorContext.Provider value={{ constructorIngredients, constructorIngredientsState }}>
+          {/* <AppContext.Provider value={{ ingredients, setIngredients }}> */}
+            {/* <ConstructorContext.Provider value={{ constructorIngredients, constructorIngredientsState }}> */}
               <BurgerIngredients setChosenIngredient={setChosenIngredient} setIsModalOpen={setIsModalOpen} setModalTitle={setModalTitle} />
-              <BurgerConstructor setOrder={setOrder} setIsModalOpen={setIsModalOpen} />
-            </ConstructorContext.Provider>
-          </AppContext.Provider>
+              <BurgerConstructor setIsModalOpen={setIsModalOpen} />
+            {/* </ConstructorContext.Provider> */}
+          {/* </AppContext.Provider> */}
         </main>
 
 

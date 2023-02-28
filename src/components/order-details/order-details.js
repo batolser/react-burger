@@ -2,8 +2,10 @@ import React from 'react';
 import orderDetailsStyles from './order-details.module.css';
 import { DoneIcon } from '../done/done';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-export const OrderDetails = ({order}) => {
+export const OrderDetails = () => {
+    const order = useSelector(state => state.order.orderDetails);
     return (
         <div className={orderDetailsStyles.order}>
             <h3 className={`${orderDetailsStyles.order__number} text text_type_digits-large mb-8`}>{order}</h3>

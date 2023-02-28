@@ -3,37 +3,46 @@ import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { ConstructorContext } from '../../services/constructorContext';
-import { sendOrder } from '../../utils/api';
+import { sendOrder } from '../../services/actions/order';
+import { useDispatch, useSelector } from 'react-redux';
 
 
-export const BurgerConstructor = ({ setOrder, setIsModalOpen }) => {
 
-  const { constructorIngredients } = useContext(ConstructorContext);
+export const BurgerConstructor = ({ setIsModalOpen }) => {
 
+  const dispatch = useDispatch();
+
+  const ingredients = useSelector(state => state.ingredients);
 
   const bun = useMemo(() => {
-    return constructorIngredients.find(item => item.type === 'bun');
-  }, [constructorIngredients]);
+    return ingredients.find(item => item.type === 'bun');
+  }, [ingredients]);
 
 
   const totalPrice = useMemo(() => {
-    return constructorIngredients.filter(item => item.type !== "bun").reduce((acc, item) => acc + item.price, 0) + bun.price * 2;
-  }, [constructorIngredients, bun.price]);
+    return ingredients.filter(item => item.type !== "bun").reduce((acc, item) => acc + item.price, 0) + bun.price * 2;
+  }, [ingredients, bun.price]);
 
-  const newOrderData = useMemo(() => {
-    return Array.from(constructorIngredients).map(i => i._id).filter(i => i !== "")
+  // const newOrderData = useMemo(() => {
+  //   return Array.from(ingredients).map(i => i._id).filter(i => i !== "")
 
-  }, [constructorIngredients]);
+  // }, [ingredients]);
 
 
-  const handleSendOrder = useCallback(() => {
+  // const handleSendOrder = useCallback(() => async () => {
+  //   const ingredientsIds = ingredients.map(ingredient => ingredient._id)
+  //   dispatch(sendOrder(ingredientsIds));
+  //   setIsModalOpen(true);
+  //   // dispatch(changeOrderDetailsPopupState(true))
+  // },[dispatch, ingredients, setIsModalOpen]);
 
-    sendOrder({ ingredients: newOrderData }).then(data => {
-      setOrder(data.order.number);
-    });
+
+  const handleSendOrder = async () => {
+    const ingredientsIds = ingredients.map(ingredient => ingredient._id)
+    dispatch(sendOrder(ingredientsIds));
     setIsModalOpen(true);
-  }, [newOrderData, setOrder, setIsModalOpen]);
-
+    // dispatch(changeOrderDetailsPopupState(true))
+  }
 
   return (
     <section className={burgerConstructorStyles.burger__constructor}>
@@ -48,7 +57,7 @@ export const BurgerConstructor = ({ setOrder, setIsModalOpen }) => {
         />
         <div className={burgerConstructorStyles.ingredients__list}>
 
-          {constructorIngredients.filter(item => item.type !== "bun")
+          {ingredients.filter(item => item.type !== "bun")
             .map((item) => (
               <div className={burgerConstructorStyles.card__wrapper} key={item._id}>
                 <DragIcon type="primary" />
@@ -90,6 +99,6 @@ export const BurgerConstructor = ({ setOrder, setIsModalOpen }) => {
 
 BurgerConstructor.propTypes = {
   setIsModalOpen: PropTypes.func.isRequired,
-  setOrder: PropTypes.func.isRequired,
+  // setOrder: PropTypes.func.isRequired,
 };
 
