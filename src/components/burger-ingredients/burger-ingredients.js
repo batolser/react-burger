@@ -1,27 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { cardPropTypes } from '../../utils/types'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredientsStyles from './burger-ingredients.module.css';
+import { AppContext } from '../../services/appContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { compareCoords } from '../../utils/compare-coords';
 
-const Tabs = () => {
-  const [current, setCurrent] = React.useState('one')
-  return (
-    <div className={burgerIngredientsStyles.tabs}>
-      <Tab value="one" active={current === 'one'} onClick={setCurrent}>
-        Булки
-      </Tab>
-      <Tab value="two" active={current === 'two'} onClick={setCurrent}>
-        Соусы
-      </Tab>
-      <Tab value="three" active={current === 'three'} onClick={setCurrent}>
-        Начинки
-      </Tab>
-    </div>
-  )
-}
+// const Tabs = () => {
+//   const [current, setCurrent] = React.useState('one')
+//   return (
+//     <div className={burgerIngredientsStyles.tabs}>
+//       <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
+//         Булки
+//       </Tab>
+//       <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
+//         Соусы
+//       </Tab>
+//       <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
+//         Начинки
+//       </Tab>
+//     </div>
+//   )
+// }
 
 const Card = ({ item, onClick }) => {
   return (
@@ -46,31 +49,59 @@ Card.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-export const BurgerIngredients = ({ ingredients, onClick }) => {
+export const BurgerIngredients = ({ setChosenIngredient, setIsModalOpen, setModalTitle }) => {
+  const ingredients = useSelector(state => state.ingredients);
+  const [current, setCurrent] = React.useState('bun')
+
+  const scrollHandler = (e) => {
+    e.target.addEventListener('scroll', function () {
+      setCurrent(compareCoords(burgerIngredientsStyles.ingredients))
+    });
+
+  }
+
+
+  const handleOpenIgredientInfoModal = React.useCallback((item) => {
+    setChosenIngredient(item);
+    setModalTitle("Детали ингредиента");
+    setIsModalOpen(true)
+    console.log(item._id)
+  }, [setChosenIngredient, setIsModalOpen, setModalTitle]);
+
   return (
     <section className={burgerIngredientsStyles.burger__ingredients}>
       <h1 className="text text_type_main-large mb-5 mt-10">Соберите бургер</h1>
-      <Tabs />
-      <div className={burgerIngredientsStyles.ingredients}>
-        <h2 className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6`} >Булки</h2>
+      <div className={burgerIngredientsStyles.tabs}>
+      <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
+        Булки
+      </Tab>
+      <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
+        Соусы
+      </Tab>
+      <Tab value="main" active={current === 'main'} onClick={setCurrent}>
+        Начинки
+      </Tab>
+    </div>
+      <div className={burgerIngredientsStyles.ingredients} onScroll={scrollHandler}>
+        <h2 id="bun" className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6`} >Булки</h2>
         <div className={burgerIngredientsStyles.cards__list}>
           {ingredients.filter(item => item.type === "bun")
             .map((item) => (
-              <Card key={item._id} item={item} onClick={onClick} />
+              <Card key={item._id} item={item} onClick={() => { handleOpenIgredientInfoModal(item) }} />
             ))}
         </div>
-        <h2 className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Соусы</h2>
+        <h2 id="sauce" className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Соусы</h2>
         <div className={burgerIngredientsStyles.cards__list}>
           {ingredients.filter(item => item.type === "sauce")
             .map((item) => (
-              <Card key={item._id} item={item} onClick={onClick} />
+              <Card key={item._id} item={item} onClick={() => { handleOpenIgredientInfoModal(item) }} />
             ))}
         </div>
-        <h2 className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Начинки</h2>
+        <h2 id="main" className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Начинки</h2>
         <div className={burgerIngredientsStyles.cards__list}>
           {ingredients.filter(item => item.type === "main")
             .map((item) => (
-              <Card key={item._id} item={item} onClick={onClick} />
+              <Card key={item._id} item={item} onClick={() => { handleOpenIgredientInfoModal(item) }} />
             ))}
         </div>
       </div>
@@ -78,7 +109,9 @@ export const BurgerIngredients = ({ ingredients, onClick }) => {
   );
 }
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(cardPropTypes).isRequired,
-  onClick: PropTypes.func.isRequired
+  setChosenIngredient: PropTypes.func.isRequired,
+  setIsModalOpen: PropTypes.func.isRequired,
+  setModalTitle: PropTypes.func.isRequired,
+
 };
 

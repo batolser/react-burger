@@ -1,11 +1,48 @@
-import React from 'react';
+import React, { useContext, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { cardPropTypes } from '../../utils/types'
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerConstructorStyles from './burger-constructor.module.css';
+import { ConstructorContext } from '../../services/constructorContext';
+import { sendOrder } from '../../services/actions/order';
+import { useDispatch, useSelector } from 'react-redux';
 
 
-export const BurgerConstructor = ({ ingredients, onClick }) => {
+
+export const BurgerConstructor = ({ setIsModalOpen }) => {
+
+  const dispatch = useDispatch();
+
+  const ingredients = useSelector(state => state.ingredients);
+
+  const bun = useMemo(() => {
+    return ingredients.find(item => item.type === 'bun');
+  }, [ingredients]);
+
+
+  const totalPrice = useMemo(() => {
+    return ingredients.filter(item => item.type !== "bun").reduce((acc, item) => acc + item.price, 0) + bun.price * 2;
+  }, [ingredients, bun.price]);
+
+  // const newOrderData = useMemo(() => {
+  //   return Array.from(ingredients).map(i => i._id).filter(i => i !== "")
+
+  // }, [ingredients]);
+
+
+  // const handleSendOrder = useCallback(() => async () => {
+  //   const ingredientsIds = ingredients.map(ingredient => ingredient._id)
+  //   dispatch(sendOrder(ingredientsIds));
+  //   setIsModalOpen(true);
+  //   // dispatch(changeOrderDetailsPopupState(true))
+  // },[dispatch, ingredients, setIsModalOpen]);
+
+
+  const handleSendOrder = async () => {
+    const ingredientsIds = ingredients.map(ingredient => ingredient._id)
+    dispatch(sendOrder(ingredientsIds));
+    setIsModalOpen(true);
+    // dispatch(changeOrderDetailsPopupState(true))
+  }
 
   return (
     <section className={burgerConstructorStyles.burger__constructor}>
@@ -14,9 +51,9 @@ export const BurgerConstructor = ({ ingredients, onClick }) => {
         <ConstructorElement
           type="top"
           isLocked={true}
-          text="Краторная булка N-200i (верх)"
-          price={200}
-          thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
+          text={`${bun.name} (верх)`}
+          price={bun.price}
+          thumbnail={bun.image}
         />
         <div className={burgerConstructorStyles.ingredients__list}>
 
@@ -38,16 +75,16 @@ export const BurgerConstructor = ({ ingredients, onClick }) => {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text="Краторная булка N-200i (низ)"
-          price={200}
-          thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
+          text={`${bun.name} (низ)`}
+          price={bun.price}
+          thumbnail={bun.image}
         />
         <div className={burgerConstructorStyles.total}>
           <div className={burgerConstructorStyles.price}>
-            <p className='text text_type_digits-default mr-4'>600</p>
+            <p className='text text_type_digits-default mr-4'>{totalPrice}</p>
             <CurrencyIcon type="primary" />
           </div>
-          <Button htmlType="button" type="primary" size="large" id="order" onClick={onClick}>
+          <Button htmlType="button" type="primary" size="large" id="order" onClick={handleSendOrder} >
             Оформить заказ
           </Button>
         </div>
@@ -61,7 +98,7 @@ export const BurgerConstructor = ({ ingredients, onClick }) => {
 
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(cardPropTypes).isRequired,
-  onClick: PropTypes.func.isRequired
+  setIsModalOpen: PropTypes.func.isRequired,
+  // setOrder: PropTypes.func.isRequired,
 };
 
