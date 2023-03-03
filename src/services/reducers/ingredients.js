@@ -1,13 +1,17 @@
 import {
-    GET_INGREDIENTS,
-    GET_INGREDIENTS_FAILED,
-    GET_INGREDIENTS_SUCCESS
+  GET_INGREDIENTS,
+  GET_INGREDIENTS_FAILED,
+  GET_INGREDIENTS_SUCCESS,
+  ADD_INGREDIENT,
+  DELETE_INGREDIENT,
+  SORT_INGREDIENTS
 } from '../actions/ingredients';
 
 export const initialState = {
-    ingredientsRequest: false,
-    ingredientsFailed: false,
-    ingredients: []
+  ingredients: [],
+  ingredientsRequest: false,
+  ingredientsFailed: false,
+  chosenIngredients: []
 }
 
 export const ingredientsReducer = (state = initialState, action) => {
@@ -15,26 +19,41 @@ export const ingredientsReducer = (state = initialState, action) => {
     case GET_INGREDIENTS: {
       return {
         ...state,
-                ingredientsRequest: true,
-                feedFailed: false,
+        ingredientsRequest: true,
+        feedFailed: false,
       };
     }
     case GET_INGREDIENTS_SUCCESS: {
-      return { 
-                ...state, 
-                ingredients: action.ingredients, 
-                ingredientsRequest: false 
-            };
+      return {
+        ...state,
+        ingredients: action.ingredients,
+        ingredientsRequest: false
+      };
     }
     case GET_INGREDIENTS_FAILED: {
-      return { 
-                ...state, 
-                ingredientsFailed: true, 
-                ingredientsRequest: false 
-            };
+      return {
+        ...state,
+        ingredientsFailed: true,
+        ingredientsRequest: false
+      };
     }
-        default: {
-            return state
-        }
+    case ADD_INGREDIENT: {
+      return {
+        ...state,
+        chosenIngredients: action.payload
+      };
     }
+    case DELETE_INGREDIENT: {
+      return { ...state, chosenIngredients: action.payload };
+    }
+    case SORT_INGREDIENTS: {
+      return {
+        ...state,
+        chosenIngredients: action.payload
+      };
+    }
+    default: {
+      return state
+    }
+  }
 } 

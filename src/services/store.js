@@ -2,7 +2,7 @@
 import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { createStore, applyMiddleware } from "redux";
-import { ingredientsReducer } from './reducers/ingredients';
+import { rootReducer } from './reducers/index';
 
 import { requestor } from "../httpRequestor";
 
@@ -11,7 +11,7 @@ export const configureStore = (initialState) => {
   const initRequestor = requestor;
 
   const store = createStore(
-    ingredientsReducer,
+    rootReducer,
     initialState,
     composeWithDevTools(
       applyMiddleware(

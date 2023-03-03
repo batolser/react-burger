@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 export const OrderDetails = () => {
-    const order = useSelector(state => state.order.orderDetails);
+    const order = useSelector(state => state.orderReducer.order);
     return (
         <div className={orderDetailsStyles.order}>
             <h3 className={`${orderDetailsStyles.order__number} text text_type_digits-large mb-8`}>{order}</h3>
