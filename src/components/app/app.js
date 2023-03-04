@@ -5,99 +5,92 @@ import appStyles from './app.module.css';
 import { BurgerIngredients } from "../burger-ingredients/burger-ingredients";
 import { BurgerConstructor } from "../burger-constructor/burger-constructor";
 import { Modal } from "../modal/modal"
-
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { OrderDetails } from "../order-details/order-details"
 
-// const orders = require('../../utils/orders');
+import { useDispatch, useSelector } from 'react-redux';
+import { getIngredients } from '../../services/actions/ingredients';
+
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+import { addIngredient } from '../../services/actions/ingredients';
+import { deleteOrderData } from '../../services/actions/order';
+import { deleteIngredientDetails } from '../../services/actions/modal';
+
 
 export const App = () => {
-  const api = 'https://norma.nomoreparties.space/api/ingredients ';
 
-  const [ingredients, setIngredients] = React.useState([]);
+  const dispatch = useDispatch();
+  const ingredients = useSelector(state => state.ingredientsData.ingredients);
+  const order = useSelector(state => state.orderReducer.order);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [modal, setModal] = React.useState();
-  const [order, setOrder] = React.useState('0123456');
   const [modalTitle, setModalTitle] = React.useState('');
-  const [newPopup, newPopupContent] = React.useState();
-
-  // let modalContent;
+  const ingredient = useSelector(state => state.modalReducer.ingredient);
 
 
-
-  const openModal = (e) => {
-    setIsModalOpen(true);
-
-    if (e.currentTarget.className.includes('burger-ingredients_card')) {
-
-      newPopupContent(ingredients.filter((item) => item._id === e.currentTarget.id)
-        .map((item, index) => (
-          <IngredientDetails item={item} key={index} />
-        )));
-      setModalTitle("Детали ингредиента");
-
-    }
-    else if (e.currentTarget.id === 'order') {
-
-      newPopupContent(<OrderDetails orderNumber={order} />)
-    }
-
+  const closeOrderModal = () => {
+    setIsModalOpen(false);
+    dispatch(deleteOrderData());
   };
-
-  React.useEffect(() => {
-
-
-    const modalEl = (<Modal title={modalTitle} onClose={closeModal}>
-      {newPopup}
-    </Modal>);
-
-    setModal(modalEl)
-    //   return () => {
-    //     setModal()
-    // }
-  }, [modalTitle, newPopup])
-
 
   const closeModal = () => {
     setIsModalOpen(false);
+    dispatch(deleteIngredientDetails());
   };
 
-  React.useEffect(() => {
+  React.useEffect(
+    () => {
+      dispatch(getIngredients());
+    }, [dispatch]
+  );
 
-    getingredients();
+  const chosenIngredients = useSelector(state => state.ingredientsData.chosenIngredients);
 
-  }, [])
+  const handleDrop = (ingredientId) => {
+    const targetIngredient = ingredients.find(ingredient => ingredient._id === ingredientId._id)
+    const selectedBun = chosenIngredients.find(ingredient => ingredient.type === 'bun')
+    const selectedBunIndex = chosenIngredients.indexOf(selectedBun)
 
-  const getingredients = () => {
-    fetch(api)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка ${res.status}`);
-      })
-      .then((res) => setIngredients(res.data))
-      .catch((e) => {
-        console.log('error :(((')
-      });
+    if (targetIngredient.type === 'bun' && selectedBun) {
+      const chosenIngredientsClone = chosenIngredients.slice();
+      chosenIngredientsClone.splice(selectedBunIndex, 1, targetIngredient);
+      dispatch(addIngredient(chosenIngredientsClone));
+    } else {
+      dispatch(addIngredient([...chosenIngredients, targetIngredient]));
+    }
   };
+
 
   return (
     <div className="App">
       <AppHeader />
+      {isModalOpen && ingredient && (
+        <Modal title={modalTitle} onClose={closeModal}>
+          <IngredientDetails />
+        </Modal>
+      )
+      }
+      {isModalOpen && order && (
+        <Modal onClose={closeOrderModal}>
+          <OrderDetails />
+        </Modal>
+      )
+      }
+      {ingredients.length &&
+        <main className={appStyles.main}>
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients setIsModalOpen={setIsModalOpen} setModalTitle={setModalTitle} />
+            <BurgerConstructor setIsModalOpen={setIsModalOpen} onDropHandler={handleDrop} />
+          </DndProvider>
+        </main>
 
-      {/* <button onClick={openModal} id="order">Открыть</button> */}
-      {isModalOpen && modal}
 
-
-      <main className={appStyles.main}>
-        <BurgerIngredients ingredients={ingredients} onClick={openModal} />
-        <BurgerConstructor ingredients={ingredients} onClick={openModal} />
-      </main>
-
+      }
     </div>
   );
-
 }
+
+
 
 
