@@ -4,7 +4,8 @@ import {
   GET_INGREDIENTS_SUCCESS,
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
-  SORT_INGREDIENTS
+  SORT_INGREDIENTS,
+  DELETE_ALL_INGREDIENTS
 } from '../actions/ingredients';
 
 export const initialState = {
@@ -52,6 +53,13 @@ export const ingredientsReducer = (state = initialState, action) => {
         chosenIngredients: action.payload
       };
     }
+    case DELETE_ALL_INGREDIENTS: {
+      return { 
+        ...state, 
+        chosenIngredients: [] 
+      };
+    }
+    
     default: {
       return state
     }

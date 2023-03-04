@@ -8,6 +8,7 @@ export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
 export const DELETE_INGREDIENT = "DELETE_INGREDIENT";
 export const SORT_INGREDIENTS = "SORT_INGREDIENTS";
+export const DELETE_ALL_INGREDIENTS = "DELETE_ALL_INGREDIENTS";
 
 export function getIngredients() {
   return function(dispatch) {
@@ -55,4 +56,8 @@ export const deleteIngredient = (newIngredientsArray) => ({
 export const sortIngredients = (newIngredientsArray) => ({
   type: SORT_INGREDIENTS,
   payload: newIngredientsArray,
+});
+
+export const deleteAllIngredients = () => ({
+  type: DELETE_ALL_INGREDIENTS
 });

@@ -15,6 +15,8 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { addIngredient } from '../../services/actions/ingredients';
+import { deleteOrderData } from '../../services/actions/order';
+import { deleteIngredientDetails } from '../../services/actions/modal';
 
 
 export const App = () => {
@@ -27,8 +29,14 @@ export const App = () => {
   const ingredient = useSelector(state => state.modalReducer.ingredient);
 
 
+  const closeOrderModal = () => {
+    setIsModalOpen(false);
+    dispatch(deleteOrderData());
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
+    dispatch(deleteIngredientDetails());
   };
 
   React.useEffect(
@@ -64,7 +72,7 @@ export const App = () => {
       )
       }
       {isModalOpen && order && (
-        <Modal onClose={closeModal}>
+        <Modal onClose={closeOrderModal}>
           <OrderDetails />
         </Modal>
       )

@@ -68,7 +68,11 @@ const dispatch = useDispatch();
     onClick={onClick} className={`${burgerIngredientsStyles.card} ${
       isDrag && burgerIngredientsStyles.moving
     }`} ref={dragRef}>
-      <Counter count={ingredientCounter} size="default" extraClass="m-1" />
+      {
+        ingredientCounter > 0 &&
+        <Counter count={ingredientCounter} size="default" extraClass="m-1" />
+      }
+      
       <img className={burgerIngredientsStyles.img} src={image} alt={name} />
       <div>
         <div className={burgerIngredientsStyles.price}>

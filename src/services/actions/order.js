@@ -3,6 +3,7 @@ import { postOrderInfo } from '../../utils/api'
 export const GET_ORDER = 'GET_ORDER';
 export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS'
+export const DELETE_ORDER_DATA = 'DELETE_ORDER_DATA';
 
 export function sendOrder(data) {
   return function(dispatch) {
@@ -29,3 +30,5 @@ export function sendOrder(data) {
         })
   }
 } 
+
+export const deleteOrderData = () => ({ type: DELETE_ORDER_DATA })

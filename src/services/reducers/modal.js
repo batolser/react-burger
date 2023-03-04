@@ -1,12 +1,14 @@
 import {
   ORDER_DETAILS,
-  INGREDIENTS_DETAILS
+  INGREDIENTS_DETAILS,
+  DELETE_INGREDIENT_DETAILS
 } from '../actions/modal';
 
 const initialState = {
   isOrderDetailsModalOpen: false,
   isIngredientsModalOpen: false,
   ingredient: {},
+  order: null,
 };
 
 export const modalReducer = (state = initialState, action) => {
@@ -15,7 +17,7 @@ export const modalReducer = (state = initialState, action) => {
     case ORDER_DETAILS: {
       return {
         ...state,
-        ingredient: action.ingredient,
+        order: action.order,
         isOrderDetailsModalOpen: action.payload,
       };
     }
@@ -24,6 +26,12 @@ export const modalReducer = (state = initialState, action) => {
         ...state,
         ingredient: action.ingredient,
         isIngredientsModalOpen: action.payload
+      };
+    }
+    case DELETE_INGREDIENT_DETAILS: {
+      return {
+        ...state,
+        ingredient: {},
       };
     }
     default: {

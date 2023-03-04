@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { sendOrder } from '../../services/actions/order';
+import { deleteAllIngredients } from '../../services/actions/ingredients';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from "react-dnd";
 import { DndProvider } from "react-dnd";
@@ -10,6 +11,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import ChosenIngredient from '../chosen-ingredient/chosen-ingredient';
 import update from 'immutability-helper';
 import { sortIngredients } from '../../services/actions/ingredients';
+
 
 export const BurgerConstructor = ({ setIsModalOpen, onDropHandler }) => {
 
@@ -24,7 +26,9 @@ export const BurgerConstructor = ({ setIsModalOpen, onDropHandler }) => {
   const handleSendOrder = async () => {
     const ingredientsIds = chosenIngredients.map(ingredient => ingredient._id)
     dispatch(sendOrder(ingredientsIds));
+    dispatch(deleteAllIngredients());
     setIsModalOpen(true);
+    // dispatch(deleteOrderData());
   }
 
   const [{ isHover }, dropRef] = useDrop({
@@ -103,9 +107,13 @@ export const BurgerConstructor = ({ setIsModalOpen, onDropHandler }) => {
               <p className='text text_type_digits-default mr-4'>{totalPrice}</p>
               <CurrencyIcon type="primary" />
             </div>
-            <Button htmlType="button" type="primary" size="large" id="order" onClick={handleSendOrder} >
+            {
+              chosenIngredients.length > 0 &&
+              <Button htmlType="button" type="primary" size="large" id="order" onClick={handleSendOrder} >
               Оформить заказ
             </Button>
+            }
+           
           </div>
         </div>
 

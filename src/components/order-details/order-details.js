@@ -1,7 +1,6 @@
 import React from 'react';
 import orderDetailsStyles from './order-details.module.css';
 import { DoneIcon } from '../done/done';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 export const OrderDetails = () => {
@@ -20,7 +19,3 @@ export const OrderDetails = () => {
         </div>
     );
 }
-
-OrderDetails.propTypes = {
-    order: PropTypes.number.isRequired
-};

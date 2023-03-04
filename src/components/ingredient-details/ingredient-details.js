@@ -1,6 +1,5 @@
 import React from 'react';
 import ingredientDetailsStyles from './ingredient-details.module.css';
-import { infoCardPropTypes } from '../../utils/types'
 import { useSelector } from 'react-redux';
 
 
@@ -35,6 +34,3 @@ export const IngredientDetails = () => {
     );
 }
 
-IngredientDetails.propTypes = {
-    item: infoCardPropTypes.isRequired
-};
