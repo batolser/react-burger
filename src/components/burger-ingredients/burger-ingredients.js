@@ -8,12 +8,13 @@ import burgerIngredientsStyles from './burger-ingredients.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { compareCoords } from '../../utils/compare-coords';
 import { useDrag } from "react-dnd";
-
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   addIngredient,
 } from "../../services/actions/ingredients";
 
 const Card = ({ ingredient, onClick }) => {
+  const location = useLocation();
 
 const { image, price, name, _id } = ingredient;
 const dispatch = useDispatch();
@@ -64,10 +65,13 @@ const dispatch = useDispatch();
 
   console.log()
   return (
-    <div id={_id} onContextMenu={handleChoseIngredient}
-    onClick={onClick} className={`${burgerIngredientsStyles.card} ${
-      isDrag && burgerIngredientsStyles.moving
-    }`} ref={dragRef}>
+    <NavLink 
+         
+            to={`/ingredients/${ingredient._id}`}
+            state={{ background: location }}
+       id={_id} onContextMenu={handleChoseIngredient}
+    onClick={onClick} className={`${burgerIngredientsStyles.card} ${burgerIngredientsStyles.link} ${
+      isDrag && burgerIngredientsStyles.moving}`} ref={dragRef}>
       {
         ingredientCounter > 0 &&
         <Counter count={ingredientCounter} size="default" extraClass="m-1" />
@@ -83,7 +87,8 @@ const dispatch = useDispatch();
           {name}
         </h4>
       </div>
-    </div>
+   
+    </NavLink>
   );
 }
 
@@ -92,44 +97,36 @@ Card.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-export const BurgerIngredients = ({ setModalTitle, setIsModalOpen }) => {
+export const BurgerIngredients = () => {
+  const dispatch = useDispatch();
   const ingredients = useSelector(state => state.ingredientsData.ingredients);
   const [current, setCurrent] = React.useState('bun')
-  console.log(ingredients);
+ 
   const scrollHandler = (e) => {
     e.target.addEventListener('scroll', function () {
       setCurrent(compareCoords(burgerIngredientsStyles.ingredients))
     });
-
   }
-  const dispatch = useDispatch();
 
   const handleOpenIgredientInfoModal = React.useCallback((item) => {
-    dispatch({type: 'INGREDIENTS_DETAILS', ingredient: item });
-    setModalTitle("Детали ингредиента");
-    setIsModalOpen(true)
+    dispatch({type: 'INGREDIENT_DETAILS', ingredient: item });
     console.log(item._id)
-  }, [setModalTitle, setIsModalOpen, dispatch]);
-
-  // const openModal = (id) => {
-  //   const index = ingredientsValues.findIndex(item => item._id === id);
-  //   dispatch({type: 'ORDER_DETAILS', ingredient: ingredientsValues[index]});
-  // }
+  }, [dispatch]);
 
   return (
     <section className={burgerIngredientsStyles.burger__ingredients}>
       <h1 className="text text_type_main-large mb-5 mt-10">Соберите бургер</h1>
       <div className={burgerIngredientsStyles.tabs}>
-      <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
-        Булки
-      </Tab>
-      <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
-        Соусы
-      </Tab>
-      <Tab value="main" active={current === 'main'} onClick={setCurrent}>
-        Начинки
-      </Tab>
-    </div>
+        <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
+          Булки
+        </Tab>
+        <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
+          Соусы
+        </Tab>
+        <Tab value="main" active={current === 'main'} onClick={setCurrent}>
+          Начинки
+        </Tab>
+      </div>
       <div className={burgerIngredientsStyles.ingredients} onScroll={scrollHandler}>
         <h2 id="bun" className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6`} >Булки</h2>
         <div className={burgerIngredientsStyles.cards__list}>
@@ -159,8 +156,8 @@ export const BurgerIngredients = ({ setModalTitle, setIsModalOpen }) => {
 }
 BurgerIngredients.propTypes = {
   // setChosenIngredient: PropTypes.func.isRequired,
-  setIsModalOpen: PropTypes.func.isRequired,
-  setModalTitle: PropTypes.func.isRequired,
+  // setIsModalOpen: PropTypes.func.isRequired,
+  // setModalTitle: PropTypes.func.isRequired,
 
 };
 

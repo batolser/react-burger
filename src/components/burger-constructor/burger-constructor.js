@@ -13,7 +13,7 @@ import update from 'immutability-helper';
 import { sortIngredients } from '../../services/actions/ingredients';
 
 
-export const BurgerConstructor = ({ setIsModalOpen, onDropHandler }) => {
+export const BurgerConstructor = ({ onDropHandler }) => {
 
   const dispatch = useDispatch();
   const chosenIngredients = useSelector(state => state.ingredientsData.chosenIngredients);
@@ -26,9 +26,8 @@ export const BurgerConstructor = ({ setIsModalOpen, onDropHandler }) => {
   const handleSendOrder = async () => {
     const ingredientsIds = chosenIngredients.map(ingredient => ingredient._id)
     dispatch(sendOrder(ingredientsIds));
+    dispatch({type: 'ORDER_DETAILS'});
     dispatch(deleteAllIngredients());
-    setIsModalOpen(true);
-    // dispatch(deleteOrderData());
   }
 
   const [{ isHover }, dropRef] = useDrop({
@@ -125,7 +124,7 @@ export const BurgerConstructor = ({ setIsModalOpen, onDropHandler }) => {
 
 
 BurgerConstructor.propTypes = {
-  setIsModalOpen: PropTypes.func.isRequired,
+  // setIsModalOpen: PropTypes.func.isRequired,
   onDropHandler: PropTypes.func.isRequired,
 };
 
