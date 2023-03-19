@@ -160,8 +160,9 @@ export function registararion (email, password, name) {
           dispatch({
             type: REFRESH_TOKEN_SUCCESS,
           })
-
-          setCookie("accessToken", res.accessToken);
+          deleteCookie("accessToken", res.accessToken);
+          deleteCookie("refreshToken", res.refreshToken);
+          setCookie("accessToken", res.accessToken.split('Bearer ')[1], { expires: 1200 });
           setCookie("refreshToken", res.refreshToken);
       
         } else {
