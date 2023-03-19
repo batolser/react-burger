@@ -13,10 +13,7 @@ export const IngredientDetailsPage = () => {
           dispatch(getIngredients());
         }, [dispatch]
       );
-      useEffect(() => {
-        // Код выполнится только при первичном монтировании
-        console.log('Привет! Я примонтировался');
-      }, []) 
+      
     const { ingredientId } = useParams();
     const ingredients = useSelector((store) => store.ingredientsData.ingredients);
 

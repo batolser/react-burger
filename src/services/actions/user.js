@@ -41,15 +41,14 @@ export function registararion (email, password, name) {
         type: REGISTRATION
       })
       registerRequest(email, password, name).then( res  => {
-        console.log(res)
         if (res && res.success) {
           dispatch({
             type: REGISTRATION_SUCCESS,
-            user: res.user
+            user: res.user,
+            token: res.accessToken,
           })
-          setCookie("accessToken", res.accessToken.split('Bearer ')[1]);
+          setCookie("accessToken", res.accessToken.split('Bearer ')[1], { expires: 1200 });
           setCookie("refreshToken", res.refreshToken);
-          console.log(res.accessToken)
         } else {
           dispatch({
             type: REGISTRATION_FAILED
@@ -60,6 +59,7 @@ export function registararion (email, password, name) {
               dispatch({
                   type: REGISTRATION_FAILED
               })
+              alert(err.message)
           })
     }
   } 
@@ -71,7 +71,7 @@ export function registararion (email, password, name) {
         type: LOGIN
       })
       loginRequest(email, password).then( res  => {
-        console.log(res)
+
         if (res && res.success) {
           dispatch({
             type: LOGIN_SUCCESS,
@@ -91,6 +91,7 @@ export function registararion (email, password, name) {
               dispatch({
                   type: LOGIN_FAILED
               })
+              alert(err.message)
           })
     }
   } 
@@ -102,7 +103,6 @@ export function registararion (email, password, name) {
         type: FORGOT_PASSWORD
       })
       forgotPasswordRequest(email).then( res  => {
-        console.log(res)
         if (res && res.success) {
           dispatch({
             type: FORGOT_PASSWORD_SUCCESS,
@@ -129,7 +129,7 @@ export function registararion (email, password, name) {
         type: RESET_PASSWORD
       })
       resetPasswordRequest(password, code).then( res  => {
-        console.log(res)
+
         if (res && res.success) {
           dispatch({
             type: RESET_PASSWORD_SUCCESS,
@@ -156,7 +156,6 @@ export function registararion (email, password, name) {
         type: REFRESH_TOKEN
       })
       refreshTokenRequest(refreshToken).then( res  => {
-        console.log(res)
         if (res && res.success) {
           dispatch({
             type: REFRESH_TOKEN_SUCCESS,
@@ -185,7 +184,6 @@ export function registararion (email, password, name) {
         type: LOGOUT
       })
       logoutRequest(refreshToken).then( res  => {
-        console.log(res)
         if (res && res.success) {
           dispatch({
             type: LOGOUT_SUCCESS,
@@ -214,7 +212,6 @@ export function registararion (email, password, name) {
         type: GET_USER_DATA
       })
       getUsersDataRequest(accessToken).then( res  => {
-        console.log(res)
         if (res && res.success) {
           dispatch({
             type: GET_USER_DATA_SUCCESS,
@@ -230,6 +227,10 @@ export function registararion (email, password, name) {
               dispatch({
                   type: GET_USER_DATA_FAILED
               })
+              if (err.message === "jwt expired" || "jwt malformed") {
+                dispatch(refreshToken(getCookie("refreshToken")))
+              }
+              console.log(err)
           })
     }
   }
@@ -240,7 +241,6 @@ export function registararion (email, password, name) {
         type: PATCH_USER_DATA
       })
       patchUsersDataRequest(accessToken, name, email, password).then( res  => {
-        console.log(res)
         if (res && res.success) {
           dispatch({
             type: PATCH_USER_DATA_SUCCESS,

@@ -11,11 +11,12 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import ChosenIngredient from '../chosen-ingredient/chosen-ingredient';
 import update from 'immutability-helper';
 import { sortIngredients } from '../../services/actions/ingredients';
-
+import { getCookie } from '../../utils/cookie';
 
 export const BurgerConstructor = ({ onDropHandler }) => {
 
   const dispatch = useDispatch();
+  const accessToken = getCookie("accessToken");
   const chosenIngredients = useSelector(state => state.ingredientsData.chosenIngredients);
 
   const totalPrice = useMemo(() => 
@@ -107,7 +108,7 @@ export const BurgerConstructor = ({ onDropHandler }) => {
               <CurrencyIcon type="primary" />
             </div>
             {
-              chosenIngredients.length > 0 &&
+            accessToken && chosenIngredients.length > 0 &&
               <Button htmlType="button" type="primary" size="large" id="order" onClick={handleSendOrder} >
               Оформить заказ
             </Button>

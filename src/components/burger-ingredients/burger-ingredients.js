@@ -63,7 +63,7 @@ const dispatch = useDispatch();
   };
 
 
-  console.log()
+
   return (
     <NavLink 
          
@@ -110,7 +110,7 @@ export const BurgerIngredients = () => {
 
   const handleOpenIgredientInfoModal = React.useCallback((item) => {
     dispatch({type: 'INGREDIENT_DETAILS', ingredient: item });
-    console.log(item._id)
+
   }, [dispatch]);
 
   return (

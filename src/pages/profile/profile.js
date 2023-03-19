@@ -1,10 +1,10 @@
 import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, EmailInput, PasswordInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { NavLink } from "react-router-dom";
+import { Button, EmailInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from './styles.module.css';
-import { getUserData, patchUsersData } from '../../services/actions/user';
+import { patchUsersData } from '../../services/actions/user';
 import { getCookie } from '../../utils/cookie'
 
 export const ProfilePage = () => {
@@ -16,17 +16,6 @@ export const ProfilePage = () => {
 
     const dispatch = useDispatch();
     const accessToken = getCookie("accessToken");
-  
-    const nameRef = useRef(null);
-    const emailRef = useRef(null);
-    const passwordRef = useRef(null);
-
-    const onNameClick = () => nameRef.current.focus();
-
-    const onEmailClick = () => emailRef.current.focus();
-  
-    const onPasswordClick = () => passwordRef.current.focus();
-  
 
     const onNameChange = (e) => {
         const value = e.target.value;
@@ -59,20 +48,12 @@ export const ProfilePage = () => {
     dispatch(patchUsersData(accessToken, name, email, password));
     }; 
 
-  
-    //  useEffect(
-    //     () => {
-    //       dispatch(getUserData(accessToken));
-    //     }, [dispatch]
-    //   );
-
-
     useEffect(() => {
         if (user) {
             setName(user.name);
             setEmail(user.email);
             setPassword('');
-        }
+        } 
       }, [user]);
     
      
@@ -84,15 +65,15 @@ export const ProfilePage = () => {
                     <li className={styles.nav_item}>
                         <NavLink
                     
-                        className={`${styles.link} text text_type_main-medium`}
-                
+                        className={`${styles.link} ${styles.link_active} text text_type_main-medium`}
+                        
                         >
                         Профиль
                         </NavLink>
                     </li>
                     <li className={styles.nav_item}>
                         <NavLink
-                        className={`${styles.link} text text_type_main-medium`}
+                        className={`${styles.link} text text_type_main-medium`} 
                         >
                         История заказов
                         </NavLink>
@@ -100,7 +81,7 @@ export const ProfilePage = () => {
                     <li className={styles.nav_item}>
                         <NavLink
                         className={`${styles.link} text text_type_main-medium`}
-                        to="/login"
+                    
                         >
                         Выход
                         </NavLink>
@@ -116,8 +97,6 @@ export const ProfilePage = () => {
                 <Input
                 type={'text'}
                 placeholder={'Имя'}
-                ref={nameRef} 
-                onClick={onNameClick}
                 onChange={onNameChange}
                 name={'name'}
                 error={false}
@@ -129,8 +108,6 @@ export const ProfilePage = () => {
                 />
                 <EmailInput
                 placeholder={'Логин'}
-                ref={emailRef} 
-                onClick={onEmailClick}
                 onChange={onEmailChange}
                 name={'email'}
                 extraClass="mb-6"
@@ -144,8 +121,6 @@ export const ProfilePage = () => {
                     extraClass="mb-6"
                     icon={'EditIcon'}
                     value={password}
-                    ref={passwordRef} 
-                    onClick={onPasswordClick}
                     onChange={onPasswordChange}
                 />
                 {isInfoChanged && (

@@ -25,7 +25,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserData } from '../../services/actions/user';
 import { getCookie } from '../../utils/cookie'
 
-import { ProtectedRouteElement } from '../protected-route-element/protected-route-element';
+import { ProtectedRoute } from '../protected-route-element/protected-route-element';
+import { ProtectedRouteAuth } from '../protected-route-auth/protected-route-auth';
+
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -41,7 +43,7 @@ export const App = () => {
   const modalTitle = 'Детали ингредиента';
   const token = useSelector((state) => state.userReducer.token);
   const accessToken = getCookie("accessToken");
-  console.log()
+
 
   const closeOrderModal = () => {
     // setIsModalOpen(false);
@@ -58,22 +60,17 @@ export const App = () => {
   
   }, [dispatch]) 
 
- 
 
-
-console.log(ingredients)
   return (
     <div className="App">
       <AppHeader />
       <Routes location={background || location}>
         <Route path="/" element={<Main />} />
-     
-        <Route path="/login" element={(!accessToken) ? <LoginPage /> : <Navigate to={'/'} />}/>
-        <Route path="/register" element={(!accessToken) ? <RegisterPage /> : <Navigate to={'/'} />} />
-        <Route path="/forgot-password" element={(!accessToken) ? <ForgotPasswordPage /> : <Navigate to={'/'} />} />
+        <Route path='/login' element={<ProtectedRouteAuth element={<LoginPage />} to={'/'}/>} />
+        <Route path='/register' element={<ProtectedRouteAuth element={<RegisterPage />} to={'/'}/>} />
+        <Route path='/forgot-password' element={<ProtectedRouteAuth element={<ForgotPasswordPage />} to={'/'}/>} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path='/profile' element={<ProtectedRouteElement element={<ProfilePage />} to={'/login'} />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path='/profile' element={<ProtectedRoute element={<ProfilePage />} to={'/login'}/>} />
         <Route path='/ingredients/:ingredientId' element={<IngredientDetailsPage />} />
         <Route path="*" element={<NotFound404 />} />
       </Routes>

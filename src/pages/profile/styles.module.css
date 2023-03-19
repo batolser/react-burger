@@ -21,6 +21,10 @@
     height: 64px;
 }
 
+.link_active {
+    color: #F2F2F3;
+}
+
 .navigation {
     align-self: flex-start;
     width: 320px;

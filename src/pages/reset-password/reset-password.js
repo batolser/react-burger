@@ -18,7 +18,7 @@ export const ResetPasswordPage = () => {
       }; 
   
     return (
-        (!isPasswordForgot) ? <Navigate to='/' /> :
+        (!isPasswordForgot) ? <Navigate to='/forgot-password' /> :
         <article className={styles.main}>
             <h2 className="text text_type_main-medium mb-6">Восстановление пароля</h2>
             <form className={styles.form} onSubmit={onSubmit}>

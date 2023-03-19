@@ -65,7 +65,9 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         user: action.user,
         registrationRequest: false,
-       
+        registrationFailed: false,
+        token: action.token,
+        isLogin: true
         
       };
     }

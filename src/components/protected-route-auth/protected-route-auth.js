@@ -4,12 +4,12 @@ import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getCookie } from '../../utils/cookie'
 
-export const ProtectedRoute = ({ element, to }) => {
+export const ProtectedRouteAuth = ({ element, to }) => {
     const accessToken = getCookie("accessToken");
-    return accessToken ? (element) : <Navigate to={to} replace/>;
+    return !accessToken ? (element) : <Navigate to={to} replace/>;
 }
 
-ProtectedRoute.propTypes = {
+ProtectedRouteAuth.propTypes = {
     element: PropTypes.object.isRequired,
     to: PropTypes.string.isRequired
   }

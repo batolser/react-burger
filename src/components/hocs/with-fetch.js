@@ -29,7 +29,7 @@
 //     render() {
 //       const { data } = this.state;
 //       return (
-//         console.log(data)
+//     
 //       )
 //     }
 // };
