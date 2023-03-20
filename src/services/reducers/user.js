@@ -182,6 +182,9 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         logoutRequest: false,
         logoutRequestFailed: false,
+        user: null,
+        isLogin: false,
+        token: null
       }
     }
     case LOGOUT_FAILED: {

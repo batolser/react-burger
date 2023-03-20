@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, EmailInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from './styles.module.css';
-import { patchUsersData } from '../../services/actions/user';
+import { patchUsersData, logout } from '../../services/actions/user';
 import { getCookie } from '../../utils/cookie'
 
 export const ProfilePage = () => {
@@ -48,13 +48,22 @@ export const ProfilePage = () => {
     dispatch(patchUsersData(accessToken, name, email, password));
     }; 
 
+    const setLogout = () => {
+        // e.nativeEvent.preventDefault();
+        const refreshToken = getCookie("refreshToken");
+        dispatch(logout(refreshToken));
+        console.log("прошло")
+      }
+
+     
+
     useEffect(() => {
         if (user) {
             setName(user.name);
             setEmail(user.email);
             setPassword('');
         } 
-      }, [user]);
+      }, [user, setName, setEmail, setPassword]);
     
      
 
@@ -81,7 +90,8 @@ export const ProfilePage = () => {
                     <li className={styles.nav_item}>
                         <NavLink
                         className={`${styles.link} text text_type_main-medium`}
-                    
+                        onClick={setLogout} 
+                        to='/'
                         >
                         Выход
                         </NavLink>

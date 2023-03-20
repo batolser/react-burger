@@ -36,10 +36,6 @@ export const AppHeader = () => {
                     <ProfileIcon type="secondary" />
                     <p className="text text_type_main-default ml-2">Личный кабинет</p>
             </NavLink>
-            {/* <button className={headerStyles.avtorisation} >
-                <ProfileIcon type="secondary" />
-                <p className="text text_type_main-default ml-2 text_color_inactive">Личный кабинет</p>
-            </button> */}
         </header>
     );
 }

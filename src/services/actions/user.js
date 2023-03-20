@@ -33,8 +33,10 @@ export const PATCH_USER_DATA = 'PATCH_USER_DATA';
 export const PATCH_USER_DATA_SUCCESS = 'PATCH_USER_DATA_SUCCESS';
 export const PATCH_USER_DATA_FAILED = 'PATCH_USER_DATA_FAILED';
 
+// const refreshTokenCookie = getCookie("refreshToken");
 
 export function registararion (email, password, name) {
+  
     return function(dispatch) {
   
       dispatch({
@@ -188,10 +190,13 @@ export function registararion (email, password, name) {
         if (res && res.success) {
           dispatch({
             type: LOGOUT_SUCCESS,
+            user: null,
+            isLogin: false,
+            token: null
           })
 
-          deleteCookie("accessToken", res.accessToken);
-          deleteCookie("refreshToken", res.refreshToken);
+          deleteCookie("accessToken");
+          deleteCookie("refreshToken");
       
         } else {
           dispatch({

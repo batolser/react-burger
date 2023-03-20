@@ -33,15 +33,11 @@ export const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   let background = location.state && location.state.background ? true : false;
-  const ingredients = useSelector(state => state.ingredientsData.ingredients);
   const order = useSelector(state => state.orderReducer.order);
   const isIngredientsModalOpen = useSelector(state => state.modalReducer.isIngredientsModalOpen);
   const isOrderDetailsModalOpen = useSelector(state => state.modalReducer.isOrderDetailsModalOpen);
-
-  // const [isModalOpen, setIsModalOpen] = React.useState(false);
   const ingredient = useSelector(state => state.modalReducer.ingredient);
   const modalTitle = 'Детали ингредиента';
-  const token = useSelector((state) => state.userReducer.token);
   const accessToken = getCookie("accessToken");
 
 
