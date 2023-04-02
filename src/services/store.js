@@ -6,7 +6,6 @@ import { rootReducer } from './reducers/index';
 
 import { requestor } from "../httpRequestor";
 
-
 export const configureStore = (initialState) => {
   const initRequestor = requestor;
 

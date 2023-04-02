@@ -1,4 +1,4 @@
-import React from 'react';
+import { FormEvent } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -9,11 +9,11 @@ import { forgotPassword } from '../../services/actions/user';
 export const ForgotPasswordPage = () => {
     const [email, setEmail] = useState(''); 
     const dispatch = useDispatch();
-    const isPasswordForgot = useSelector((state) => state.userReducer.isPasswordForgot);
+    const isPasswordForgot = useSelector((state: any) => state.userReducer.isPasswordForgot);
     
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(forgotPassword(email));
+        dispatch<any>(forgotPassword(email));
       }; 
 
     return (

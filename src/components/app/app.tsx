@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 
@@ -32,11 +32,12 @@ import { ProtectedRouteAuth } from '../protected-route-auth/protected-route-auth
 export const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  let background = location.state && location.state.background ? true : false;
-  const order = useSelector(state => state.orderReducer.order);
-  const isIngredientsModalOpen = useSelector(state => state.modalReducer.isIngredientsModalOpen);
-  const isOrderDetailsModalOpen = useSelector(state => state.modalReducer.isOrderDetailsModalOpen);
-  const ingredient = useSelector(state => state.modalReducer.ingredient);
+  // let background = location.state && location.state.background ? true : false;
+  let background = location.state && location.state.background;
+  const order = useSelector((state: any) => state.orderReducer.order);
+  const isIngredientsModalOpen = useSelector((state: any) => state.modalReducer.isIngredientsModalOpen);
+  const isOrderDetailsModalOpen = useSelector((state: any) => state.modalReducer.isOrderDetailsModalOpen);
+  const ingredient = useSelector((state: any) => state.modalReducer.ingredient);
   const modalTitle = 'Детали ингредиента';
   const accessToken = getCookie("accessToken");
 
@@ -52,7 +53,7 @@ export const App = () => {
   };
 
   useEffect(() => {
-    dispatch(getUserData(accessToken));
+    dispatch<any>(getUserData(accessToken));
   
   }, [dispatch]) 
 
@@ -71,8 +72,8 @@ export const App = () => {
         <Route path="*" element={<NotFound404 />} />
       </Routes>
   
-      {isIngredientsModalOpen && ingredient && (
-        <Modal title={modalTitle} onClose={closeIngredientModal} background={background}>
+      {isIngredientsModalOpen && ingredient && background && (
+        <Modal title={modalTitle} onClose={closeIngredientModal} >
           <IngredientDetails />
         </Modal>
       )

@@ -1,18 +1,21 @@
 import chosenIngredientStyle from './chosen-ingredient.module.css';
+import { FC } from 'react';
+import { Identifier, XYCoord } from 'dnd-core'
 import { useSelector, useDispatch } from 'react-redux';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from "react-dnd";
 import { useRef } from 'react';
 import { deleteIngredient } from '../../services/actions/ingredients';
-import PropTypes from 'prop-types';
+import { IChosenIngredient, IIngredient, DragItem } from '../../services/types/types'
 
-const ChosenIngredient = ({ ingredient, id, moveIngredient, index }) => {
+
+const ChosenIngredient: FC<IChosenIngredient> = ({ ingredient, id, moveIngredient, index }) => {
   const { name, price, image, } = ingredient;
   const dispatch = useDispatch();
-  const chosenIngredients = useSelector(state => state.ingredientsData.chosenIngredients);
-  const ref = useRef(null);
+  const chosenIngredients = useSelector((state: any) => state.ingredientsData.chosenIngredients);
+  const ref = useRef<HTMLLIElement>(null);
 
-  const [{ handlerId }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop< DragItem, void, { handlerId: Identifier | null}>({
     accept: 'chosen-ingredient',
     collect(monitor) {
       return {
@@ -34,7 +37,7 @@ const ChosenIngredient = ({ ingredient, id, moveIngredient, index }) => {
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
@@ -63,17 +66,17 @@ const ChosenIngredient = ({ ingredient, id, moveIngredient, index }) => {
 
   drag(drop(ref));
 
-  const handleDeleteIngredient = (item) => () => {
+  const handleDeleteIngredient = (item: IIngredient) => () => {
     const selectedIngredientIndex = chosenIngredients.indexOf(item)
     const chosenIngredientsClone = chosenIngredients.slice();
     chosenIngredientsClone.splice(selectedIngredientIndex, 1);
-    dispatch(deleteIngredient(chosenIngredientsClone))
+    dispatch<any>(deleteIngredient(chosenIngredientsClone))
   }
 
 
   return (
     <li ref={ref} style={{ opacity }} data-handler-id={handlerId} className={chosenIngredientStyle.list_item}>
-      <DragIcon />
+      <DragIcon type="primary"/>
       <ConstructorElement
         text={name}
         price={price}
@@ -84,23 +87,6 @@ const ChosenIngredient = ({ ingredient, id, moveIngredient, index }) => {
   )
 }
 
-ChosenIngredient.propTypes = {
-  ingredient: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    proteins: PropTypes.number.isRequired,
-    type: PropTypes.string.isRequired,
-    _id: PropTypes.string.isRequired,
-  }),
-  id: PropTypes.string.isRequired,
-  moveIngredient: PropTypes.func.isRequired,
-  index: PropTypes.number.isRequired,
-};
+
 
 export default ChosenIngredient;

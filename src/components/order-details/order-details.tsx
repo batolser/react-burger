@@ -4,7 +4,8 @@ import { DoneIcon } from '../done/done';
 import { useSelector } from 'react-redux';
 
 export const OrderDetails = () => {
-    const order = useSelector(state => state.orderReducer.order);
+    const order = useSelector((state:any) => state.orderReducer.order);
+
     return (
         <div className={orderDetailsStyles.order}>
             <h3 className={`${orderDetailsStyles.order__number} text text_type_digits-large mb-8`}>{order}</h3>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, EmailInput, PasswordInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -10,13 +10,13 @@ export const RegisterPage = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');
-    const user = useSelector((state) => state.userReducer.user);
-    const token = useSelector((state) => state.userReducer.token);
+    const user = useSelector((state:any) => state.userReducer.user);
+    const token = useSelector((state:any) => state.userReducer.token);
     const dispatch = useDispatch();
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(registararion(email, password, name));
+        dispatch<any>(registararion(email, password, name));
       };
    
     return (

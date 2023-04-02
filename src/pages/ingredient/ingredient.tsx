@@ -1,23 +1,23 @@
-import { React, useEffect } from 'react';
-import { memo, useLayoutEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './styles.module.css';
 import ingredientDetailsStyles from '../../components/ingredient-details/ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
 import { getIngredients } from '../../services/actions/ingredients';
+import { IIngredient } from '../../services/types/types'
 
 export const IngredientDetailsPage = () => {
     const dispatch = useDispatch();
     useEffect(
         () => {
-          dispatch(getIngredients());
+          dispatch<any>(getIngredients());
         }, [dispatch]
       );
       
     const { ingredientId } = useParams();
-    const ingredients = useSelector((store) => store.ingredientsData.ingredients);
+    const ingredients = useSelector((store: any) => store.ingredientsData.ingredients);
 
-    const ingredient = ingredients.find(item => item._id === ingredientId);
+    const ingredient = ingredients.find((item: IIngredient) => item._id === ingredientId);
    
 
    
@@ -57,7 +57,5 @@ export const IngredientDetailsPage = () => {
         </div>
           
         )
-        // <div>ghbdtn</div>
       )
 }
-// export default memo(IngredientDetailsPage);

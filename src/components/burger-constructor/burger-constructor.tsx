@@ -1,5 +1,5 @@
-import React, { useMemo, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { FC, useMemo, useCallback } from 'react';
+
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { sendOrder } from '../../services/actions/order';
@@ -12,28 +12,29 @@ import ChosenIngredient from '../chosen-ingredient/chosen-ingredient';
 import update from 'immutability-helper';
 import { sortIngredients } from '../../services/actions/ingredients';
 import { getCookie } from '../../utils/cookie';
+import { IBurgerConstructorProps, IIngredient } from '../../services/types/types'
 
-export const BurgerConstructor = ({ onDropHandler }) => {
+export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }) => {
 
   const dispatch = useDispatch();
   const accessToken = getCookie("accessToken");
-  const chosenIngredients = useSelector(state => state.ingredientsData.chosenIngredients);
+  const chosenIngredients = useSelector((state: any) => state.ingredientsData.chosenIngredients);
 
   const totalPrice = useMemo(() => 
-  chosenIngredients.reduce((acc, cur) => cur.type === 'bun' ? acc + (cur.price * 2) : acc + cur.price, 0),
+  chosenIngredients.reduce((acc: number, cur: IIngredient) => cur.type === 'bun' ? acc + (cur.price * 2) : acc + cur.price, 0),
   [chosenIngredients]);
 
 
   const handleSendOrder = async () => {
-    const ingredientsIds = chosenIngredients.map(ingredient => ingredient._id)
-    dispatch(sendOrder(ingredientsIds));
+    const ingredientsIds = chosenIngredients.map((ingredient: IIngredient) => ingredient._id)
+    dispatch<any>(sendOrder(ingredientsIds));
     dispatch({type: 'ORDER_DETAILS'});
     dispatch(deleteAllIngredients());
   }
 
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",
-    drop(ingredientId) {
+    drop(ingredientId: IIngredient) {
       onDropHandler(ingredientId);
     },
     collect: monitor => ({
@@ -42,15 +43,15 @@ export const BurgerConstructor = ({ onDropHandler }) => {
   });
 
 
-  const moveIngredient = useCallback((dragIndex, hoverIndex) => {
-    const bun = chosenIngredients.filter(ingredient => ingredient.type === 'bun')
-    const mainIngredients = chosenIngredients.filter(ingredient => ingredient.type !== 'bun')
+  const moveIngredient = useCallback((dragIndex: number, hoverIndex: number) => {
+    const bun = chosenIngredients.filter((ingredient: IIngredient) => ingredient.type === 'bun')
+    const mainIngredients = chosenIngredients.filter((ingredient: IIngredient) => ingredient.type !== 'bun')
     const sortedIngredients = update(mainIngredients, {
       $splice: [
         [dragIndex, 1],
         [hoverIndex, 0, mainIngredients[dragIndex]],
       ],
-    }, [mainIngredients])
+    });
     const sortedInregientsWithBun = [...bun, ...sortedIngredients]
 
     dispatch(sortIngredients([...sortedInregientsWithBun]));
@@ -61,8 +62,10 @@ export const BurgerConstructor = ({ onDropHandler }) => {
   const borderColor = isHover ? '#4C4CFF' : 'transparent';
 
   const bunItem = (
-    chosenIngredients, property, trueValue, falseValue
-  ) => chosenIngredients.find(ingredient => ingredient.type === 'bun') ? `${(chosenIngredients.find(ingredient => ingredient.type === 'bun'))[property]} ${trueValue}` : falseValue
+    chosenIngredients: IIngredient[], property: string, trueValue :string, falseValue: string
+  ) => chosenIngredients.find((ingredient: IIngredient) => ingredient.type === 'bun') 
+   // @ts-ignore
+  ? `${(chosenIngredients.find((ingredient: IIngredient) => ingredient.type === 'bun'))[property]} ${trueValue}` : falseValue
 
   return (
     <section className={burgerConstructorStyles.burger__constructor} >
@@ -75,7 +78,7 @@ export const BurgerConstructor = ({ onDropHandler }) => {
                 type="top"
                 isLocked={true}
                 text={bunItem(chosenIngredients, 'name', '(верх)', 'Выберите булку')}
-                price={bunItem(chosenIngredients, 'price', '', '0')}
+                price={+bunItem(chosenIngredients, 'price', '', '0')}
                 thumbnail={bunItem(chosenIngredients, 'image', '', '')}
 
               /> : <p className="text text_type_main-large pt-3">
@@ -86,7 +89,7 @@ export const BurgerConstructor = ({ onDropHandler }) => {
 
           <div className={burgerConstructorStyles.ingredients__list}>
 
-            {chosenIngredients.map((ingredient, idx) =>
+            {chosenIngredients.map((ingredient : IIngredient, idx: number) =>
               ingredient.type !== 'bun'
               && <ChosenIngredient key={ingredient.uuid} index={idx} moveIngredient={moveIngredient}
                 ingredient={ingredient} id={`${ingredient._id}${idx}`} />
@@ -98,7 +101,7 @@ export const BurgerConstructor = ({ onDropHandler }) => {
               type="bottom"
               isLocked={true}
               text={bunItem(chosenIngredients, 'name', '(низ)', 'Выберите булку')}
-              price={bunItem(chosenIngredients, 'price', '', '0')}
+              price={+bunItem(chosenIngredients, 'price', '', '0')}
               thumbnail={bunItem(chosenIngredients, 'image', '', '')}
             />
           }</div>
@@ -124,8 +127,4 @@ export const BurgerConstructor = ({ onDropHandler }) => {
 }
 
 
-BurgerConstructor.propTypes = {
-  // setIsModalOpen: PropTypes.func.isRequired,
-  onDropHandler: PropTypes.func.isRequired,
-};
 

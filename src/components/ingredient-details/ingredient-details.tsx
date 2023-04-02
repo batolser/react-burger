@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 
 export const IngredientDetails = () => {
-    const ingredient = useSelector(state => state.modalReducer.ingredient);
+    const ingredient = useSelector((state:any) => state.modalReducer.ingredient);
     return (
         <div className={ingredientDetailsStyles.card}>
             <img className={ingredientDetailsStyles.img} src={ingredient.image_large} alt={ingredient.name} />

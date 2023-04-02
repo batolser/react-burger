@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -6,15 +6,15 @@ import { Link, Navigate } from "react-router-dom";
 import styles from './styles.module.css';
 import { resetPassword } from '../../services/actions/user';
 
-export const ResetPasswordPage = () => {
+export const ResetPasswordPage: FC = () => {
     const [code, setCode] = useState("");
     const [password, setPassword] = useState('');
-    const isPasswordForgot = useSelector((state) => state.userReducer.isPasswordForgot);
+    const isPasswordForgot = useSelector((state: any) => state.userReducer.isPasswordForgot);
     const dispatch = useDispatch();
     
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(resetPassword(password, code));
+        dispatch<any>(resetPassword(password, code));
       }; 
   
     return (

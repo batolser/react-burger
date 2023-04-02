@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, FormEvent  } from 'react';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, EmailInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -12,46 +12,45 @@ export const ProfilePage = () => {
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState("");
     const [isInfoChanged, setIsInfoChanged] = useState(false);
-    const user = useSelector((state) => state.userReducer.user);
+    const user = useSelector((state:any) => state.userReducer.user);
 
     const dispatch = useDispatch();
     const accessToken = getCookie("accessToken");
 
-    const onNameChange = (e) => {
+    const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setName(value);
         value === user.name ? setIsInfoChanged(false) : setIsInfoChanged(true);
       }
     
-      const onEmailChange = (e) => {
+      const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setEmail(value);
         value === user.email ? setIsInfoChanged(false) : setIsInfoChanged(true);
       }
     
-      const onPasswordChange = (e) => {
+      const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setPassword(value);
         value === password ? setIsInfoChanged(false) : setIsInfoChanged(true);
       }
 
 
-    const cancel = (e) => {
-        e.preventDefault();
+    const cancel = () => {
+   
         setName(user.name)
         setEmail(user.email)
         setPassword('')
       }
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(patchUsersData(accessToken, name, email, password));
+    dispatch<any>(patchUsersData(accessToken, name, email, password));
     }; 
 
     const setLogout = () => {
-        // e.nativeEvent.preventDefault();
         const refreshToken = getCookie("refreshToken");
-        dispatch(logout(refreshToken));
+        dispatch<any>(logout(refreshToken));
         console.log("прошло")
       }
 
@@ -75,7 +74,7 @@ export const ProfilePage = () => {
                         <NavLink
                     
                         className={`${styles.link} ${styles.link_active} text text_type_main-medium`}
-                        
+                        to='#'
                         >
                         Профиль
                         </NavLink>
@@ -83,6 +82,7 @@ export const ProfilePage = () => {
                     <li className={styles.nav_item}>
                         <NavLink
                         className={`${styles.link} text text_type_main-medium`} 
+                        to='#'
                         >
                         История заказов
                         </NavLink>
@@ -116,7 +116,7 @@ export const ProfilePage = () => {
                 icon={'EditIcon'}
                 value={name}
                 />
-                <EmailInput
+                <Input
                 placeholder={'Логин'}
                 onChange={onEmailChange}
                 name={'email'}

@@ -1,6 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { cardPropTypes } from '../../utils/types'
+import React, { FC, UIEvent } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -9,21 +7,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { compareCoords } from '../../utils/compare-coords';
 import { useDrag } from "react-dnd";
 import { NavLink, useLocation } from 'react-router-dom';
-import {
-  addIngredient,
-} from "../../services/actions/ingredients";
+// import {
+//   addIngredient,
+// } from "../../services/actions/ingredients";
+import { ICard, IIngredient } from '../../services/types/types'
 
-const Card = ({ ingredient, onClick }) => {
+const Card: FC<ICard> = ({ ingredient, onClick }) => {
   const location = useLocation();
 
 const { image, price, name, _id } = ingredient;
-const dispatch = useDispatch();
+// const dispatch = useDispatch();
   const chosenIngredients = useSelector(
-    (state) => state.ingredientsData.chosenIngredients
+    (state: any) => state.ingredientsData.chosenIngredients
   );
-  const ingredients = useSelector(
-    (state) => state.ingredientsData.ingredients
-  );
+  // const ingredients = useSelector(
+  //   (state) => state.ingredientsData.ingredients
+  // );
 
   const [{ isDrag }, dragRef] = useDrag({
     type: "ingredient",
@@ -36,31 +35,32 @@ const dispatch = useDispatch();
   let ingredientCounter = 0;
 
   chosenIngredients.forEach(
-    (ingredient) =>
+    (ingredient: IIngredient) =>
       ingredient.name === name &&
       (ingredient.type === "bun"
         ? (ingredientCounter += 2)
         : (ingredientCounter += 1))
   );
 
-  const handleChoseIngredient = (evt) => {
-    evt.preventDefault();
-    const targetIngredient = ingredients.find(
-      (ingredient) => ingredient._id === evt.currentTarget.dataset.id
-    );
-    const selectedBun = chosenIngredients.find(
-      (ingredient) => ingredient.type === "bun"
-    );
-    const selectedBunIndex = chosenIngredients.indexOf(selectedBun);
+  // const handleChoseIngredient = (e) => {
+  //   e.preventDefault();
+  //   console.log('произошло')
+  //   const targetIngredient = ingredients.find(
+  //     (ingredient) => ingredient._id === e.currentTarget.dataset.id
+  //   );
+  //   const selectedBun = chosenIngredients.find(
+  //     (ingredient) => ingredient.type === "bun"
+  //   );
+  //   const selectedBunIndex = chosenIngredients.indexOf(selectedBun);
 
-    if (targetIngredient.type === "bun" && selectedBun) {
-      const chosenIngredientsClone = chosenIngredients.slice();
-      chosenIngredientsClone.splice(selectedBunIndex, 1, targetIngredient);
-      dispatch(addIngredient(chosenIngredientsClone));
-    } else {
-      dispatch(addIngredient([...chosenIngredients, targetIngredient]));
-    }
-  };
+  //   if (targetIngredient.type === "bun" && selectedBun) {
+  //     const chosenIngredientsClone = chosenIngredients.slice();
+  //     chosenIngredientsClone.splice(selectedBunIndex, 1, targetIngredient);
+  //     dispatch(addIngredient(chosenIngredientsClone));
+  //   } else {
+  //     dispatch(addIngredient([...chosenIngredients, targetIngredient]));
+  //   }
+  // };
 
 
 
@@ -69,7 +69,7 @@ const dispatch = useDispatch();
          
             to={`/ingredients/${ingredient._id}`}
             state={{ background: location }}
-       id={_id} onContextMenu={handleChoseIngredient}
+       id={_id} 
     onClick={onClick} className={`${burgerIngredientsStyles.card} ${burgerIngredientsStyles.link} ${
       isDrag && burgerIngredientsStyles.moving}`} ref={dragRef}>
       {
@@ -92,23 +92,19 @@ const dispatch = useDispatch();
   );
 }
 
-Card.propTypes = {
-  ingredient: cardPropTypes.isRequired,
-  onClick: PropTypes.func.isRequired
-};
 
 export const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  const ingredients = useSelector(state => state.ingredientsData.ingredients);
+  const ingredients = useSelector((state: any) => state.ingredientsData.ingredients);
   const [current, setCurrent] = React.useState('bun')
  
-  const scrollHandler = (e) => {
+  const scrollHandler = (e: UIEvent) => {
     e.target.addEventListener('scroll', function () {
       setCurrent(compareCoords(burgerIngredientsStyles.ingredients))
     });
   }
 
-  const handleOpenIgredientInfoModal = React.useCallback((item) => {
+  const handleOpenIgredientInfoModal = React.useCallback((item: IIngredient) => {
     dispatch({type: 'INGREDIENT_DETAILS', ingredient: item });
 
   }, [dispatch]);
@@ -130,22 +126,22 @@ export const BurgerIngredients = () => {
       <div className={burgerIngredientsStyles.ingredients} onScroll={scrollHandler}>
         <h2 id="bun" className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6`} >Булки</h2>
         <div className={burgerIngredientsStyles.cards__list}>
-          {ingredients.filter(ingredient => ingredient.type === "bun")
-            .map((ingredient) => (
+          {ingredients.filter((ingredient:IIngredient) => ingredient.type === "bun")
+            .map((ingredient:IIngredient) => (
               <Card key={ingredient._id} ingredient={ingredient} onClick={() => { handleOpenIgredientInfoModal(ingredient) }} />
             ))}
         </div>
         <h2 id="sauce" className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Соусы</h2>
         <div className={burgerIngredientsStyles.cards__list}>
-          {ingredients.filter(ingredient => ingredient.type === "sauce")
-            .map((ingredient) => (
+          {ingredients.filter((ingredient:IIngredient) => ingredient.type === "sauce")
+            .map((ingredient:IIngredient) => (
               <Card key={ingredient._id} ingredient={ingredient} onClick={() => { handleOpenIgredientInfoModal(ingredient) }} />
             ))}
         </div>
         <h2 id="main" className={`${burgerIngredientsStyles.ingredients__title} text text_type_main-medium mb-6 mt-10`}>Начинки</h2>
         <div className={burgerIngredientsStyles.cards__list}>
-          {ingredients.filter(ingredient => ingredient.type === "main")
-            .map((ingredient) => (
+          {ingredients.filter((ingredient:IIngredient) => ingredient.type === "main")
+            .map((ingredient:IIngredient) => (
               <Card key={ingredient._id} ingredient={ingredient} onClick={() => { handleOpenIgredientInfoModal(ingredient) }} />
               // <Ingredient key={item._id} ingredient={item} />
             ))}
@@ -154,10 +150,5 @@ export const BurgerIngredients = () => {
     </section>
   );
 }
-BurgerIngredients.propTypes = {
-  // setChosenIngredient: PropTypes.func.isRequired,
-  // setIsModalOpen: PropTypes.func.isRequired,
-  // setModalTitle: PropTypes.func.isRequired,
 
-};
 

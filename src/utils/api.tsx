@@ -1,7 +1,7 @@
 
 export const api = 'https://norma.nomoreparties.space/api';
 
-export const postOrderInfo = async (ingredientsIds) => {
+export const postOrderInfo = async (ingredientsIds: string[]) => {
     const orderData = {
         'ingredients': ingredientsIds
       }
@@ -22,7 +22,7 @@ export const getIngredientsRequest = async () => {
   };
  
 
-export const registerRequest = async (email, password, name) => {
+export const registerRequest = async (email: string, password: string, name: string) => {
   const res = await fetch(`${api}/auth/register`, {
     method: 'POST',
     headers: {
@@ -38,7 +38,7 @@ return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
 
 
-export const loginRequest = async (email, password) => {
+export const loginRequest = async (email: string, password: string) => {
   const res = await fetch(`${api}/auth/login`, {
     method: 'POST',
     headers: {
@@ -54,7 +54,7 @@ return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 
 
 
-export const forgotPasswordRequest = async (email) => {
+export const forgotPasswordRequest = async (email: string) => {
   const res = await fetch(`${api}/password-reset`, {
     method: 'POST',
     headers: {
@@ -67,7 +67,7 @@ export const forgotPasswordRequest = async (email) => {
 return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
 
-export const resetPasswordRequest = async (password, code) => {
+export const resetPasswordRequest = async (password: string, code: string) => {
   const res = await fetch(`${api}/password-reset/reset`, {
     method: 'POST',
     headers: {
@@ -81,7 +81,7 @@ export const resetPasswordRequest = async (password, code) => {
 return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
 
-export const refreshTokenRequest = async (refreshToken) => {
+export const refreshTokenRequest = async (refreshToken: string) => {
   const res = await fetch(`${api}/auth/token`, {
     method: 'POST',
     headers: {
@@ -95,7 +95,7 @@ return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
 
 
-export const logoutRequest = async (refreshToken) => {
+export const logoutRequest = async (refreshToken: string) => {
   const res = await fetch(`${api}/auth/logout`, {
     method: 'POST',
     headers: {
@@ -109,7 +109,7 @@ return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
 
 
-export const getUsersDataRequest = async (accessToken) => {
+export const getUsersDataRequest = async (accessToken: string) => {
   const res = await fetch(`${api}/auth/user`, {
     method: 'GET',
     headers: {
@@ -120,7 +120,7 @@ export const getUsersDataRequest = async (accessToken) => {
 return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
 
-export const patchUsersDataRequest = async (accessToken, name, email, password ) => {
+export const patchUsersDataRequest = async (accessToken: string, name: string, email: string, password: string ) => {
   const res = await fetch(`${api}/auth/user`, {
     method: 'PATCH',
     headers: {
