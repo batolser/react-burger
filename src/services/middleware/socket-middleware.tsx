@@ -45,9 +45,11 @@
 //   };
 
 import { Middleware } from "redux";
-import { IWebSocket } from "../actions/orders";
+import { TWebSocket } from "../actions/orders";
 
-export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
+
+
+export const socketMiddleware = (wsActions: TWebSocket): Middleware => {
   return store => {
     let socket: WebSocket | null = null;
     let url = undefined;
@@ -61,8 +63,8 @@ export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
 
       if (type === wsStart) {
         url = payload;
-        socket = new WebSocket(action.payload!);
-        // socket = new WebSocket(url);
+        // socket = new WebSocket(action.payload!);
+        socket = new WebSocket(url);
         isConnected = true
           window.clearTimeout(reconnectTimer)
           reconnectTimer = 0

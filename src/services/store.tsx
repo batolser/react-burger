@@ -45,7 +45,7 @@ import { rootReducer } from './reducers/index';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { socketMiddleware } from '../services/middleware/socket-middleware';
+import { socketMiddleware, } from '../services/middleware/socket-middleware';
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
@@ -61,8 +61,8 @@ const wsActions = {
   onOpen: WS_CONNECTION_SUCCESS,
   onError: WS_CONNECTION_ERROR,
   onClose: WS_CONNECTION_CLOSED,
-  wsDisconnect: WS_DISCONNECT,
   onMessage: WS_GET_MESSAGE,
+  wsDisconnect: WS_DISCONNECT,
   wsSend: WS_SEND_MESSAGE
 }
 
