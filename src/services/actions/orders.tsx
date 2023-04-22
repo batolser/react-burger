@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { IOrder } from '../types/types'
 
 export const WS_CONNECTION_START = 'WS_CONNECTION_START';
@@ -37,8 +36,7 @@ export interface IWsConnectionClosed {
   readonly type: typeof WS_CONNECTION_CLOSED;
 }
 export interface IWsDisconnect {
-  readonly type: typeof WS_DISCONNECT;
-  
+  readonly type: typeof WS_DISCONNECT; 
 }
 export interface IWsConnectionError {
   readonly type: typeof WS_CONNECTION_ERROR;
