@@ -1,4 +1,12 @@
 import { RouteProps } from 'react-router-dom';
+import {store} from "../store";
+import {Action, ActionCreator} from "redux";
+import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import { TIngredientsActions } from '../actions/ingredients';
+import { TModalActions } from '../actions/modal';
+import { TOrderActions } from '../actions/order';
+import { TUserActions } from '../actions/user';
+import { TWSActions } from '../actions/orders';
 
 export interface IModalProps {
     title?: string;
@@ -57,20 +65,96 @@ export interface IBurgerConstructorProps {
     onDropHandler: (ingredientId: IIngredient) => void;
  }
 
-// export interface IProtectedRouteProps {
-//     element: React.ReactNode,
-//     to: string,
-// }
-
-// export interface IInitialState {
-//     ingredients: never[];
-//     ingredientsRequest: boolean;
-//     ingredientsFailed: boolean;
-//     chosenIngredients: never[];
-// }
+ export interface IUser {
+    email: string
+    name: string
+  }
 
 
 export type TProtectedRouteProps = {
     element: JSX.Element;
     to: string
   } & RouteProps;
+
+export interface IModalState {
+  isIngredientsModalOpen: boolean;
+  isOrderDetailsModalOpen: boolean;
+  ingredient:  IIngredient | null;
+  order: string | null;
+}
+
+export interface IOrderState {
+  orderRequest: boolean;
+  orderFailed: boolean;
+  order: string | null;
+}
+export interface IIngredientsState {
+  ingredients: IIngredient[];
+  ingredientsRequest: boolean;
+  ingredientsFailed: boolean;
+  chosenIngredients: IIngredient[];
+}
+
+export interface IUserState {
+  registrationRequest: boolean;
+  registrationFailed: boolean;
+  loginRequest: boolean;
+  loginRequestFailed: boolean;
+  forgotPasswordRequest: boolean;
+  forgotPasswordRequestFailed: boolean;
+  resetPasswordRequest: boolean;
+  resetPasswordRequestFailed: boolean;
+  refreshTokenRequest: boolean;
+  refreshTokenRequestFailed: boolean;
+  logoutRequest: boolean;
+  logoutRequestFailed: boolean;
+  getUsersDataRequest: boolean;
+  getUsersDataRequestFailed: boolean;
+  patchUsersDataRequest: boolean;
+  patchUsersDataRequestFailed: boolean;
+  user: IUser | null;
+  isLogin: boolean;
+  isPasswordForgot: boolean;
+  token: string | null;
+}
+export interface IOrder {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+}
+export interface IOrdersState {
+  wsOrders: boolean,
+  wsUserOrders: boolean,
+  orders: IOrder[],
+  userOrders: IOrder[],
+  total: number,
+  totalToday: number,
+  orderInfoRequest: boolean,
+  orderInfoFailed: boolean,
+  orderInfo: IOrder | null,
+  ordersError?: Event,
+  userOrdersError?: Event,
+}
+
+export interface IOrdersItemProps {
+  order: IOrder,
+  isHistory: boolean,
+}
+
+type TApplicationActions =
+  | TIngredientsActions
+  | TModalActions
+  | TOrderActions
+  | TUserActions
+  | TWSActions;
+
+export type RootState = ReturnType<typeof store.getState>;
+
+
+export type AppThunk<ReturnType = void> = ActionCreator<ThunkAction<ReturnType, RootState, unknown, TApplicationActions>>;
+
+export type AppDispatch = ThunkDispatch<RootState, never, TApplicationActions>;

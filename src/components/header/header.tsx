@@ -22,10 +22,10 @@ export const AppHeader = () => {
                         </a>
                     </li>
                     <li className='ml-2 pl-5' >
-                        <a className={headerStyles.link} href='/'>
+                        <NavLink className={({isActive}) => isActive ? `${headerStyles.link_active}` : `${headerStyles.link}` } to="/feed">
                             <ListIcon type="secondary" />
                             <p className="text text_type_main-default ml-2 text_color_inactive">Лента заказов</p>
-                        </a>
+                        </NavLink>
                     </li>
                 </ul>
             </nav>

@@ -4,7 +4,7 @@ import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-de
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { sendOrder } from '../../services/actions/order';
 import { deleteAllIngredients } from '../../services/actions/ingredients';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../../services/hooks/hooks";
 import { useDrop } from "react-dnd";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -18,7 +18,7 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }
 
   const dispatch = useDispatch();
   const accessToken = getCookie("accessToken");
-  const chosenIngredients = useSelector((state: any) => state.ingredientsData.chosenIngredients);
+  const chosenIngredients = useSelector((state) => state.ingredientsData.chosenIngredients);
 
   const totalPrice = useMemo(() => 
   chosenIngredients.reduce((acc: number, cur: IIngredient) => cur.type === 'bun' ? acc + (cur.price * 2) : acc + cur.price, 0),
@@ -27,7 +27,7 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }
 
   const handleSendOrder = async () => {
     const ingredientsIds = chosenIngredients.map((ingredient: IIngredient) => ingredient._id)
-    dispatch<any>(sendOrder(ingredientsIds));
+    dispatch(sendOrder(ingredientsIds));
     dispatch({type: 'ORDER_DETAILS'});
     dispatch(deleteAllIngredients());
   }

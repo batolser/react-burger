@@ -3,26 +3,21 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredientsStyles from './burger-ingredients.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../../services/hooks/hooks";
 import { compareCoords } from '../../utils/compare-coords';
 import { useDrag } from "react-dnd";
 import { NavLink, useLocation } from 'react-router-dom';
-// import {
-//   addIngredient,
-// } from "../../services/actions/ingredients";
 import { ICard, IIngredient } from '../../services/types/types'
+import { changeIngredientDetails } from '../../services/actions/modal'
 
 const Card: FC<ICard> = ({ ingredient, onClick }) => {
   const location = useLocation();
 
 const { image, price, name, _id } = ingredient;
-// const dispatch = useDispatch();
+
   const chosenIngredients = useSelector(
-    (state: any) => state.ingredientsData.chosenIngredients
+    (state) => state.ingredientsData.chosenIngredients
   );
-  // const ingredients = useSelector(
-  //   (state) => state.ingredientsData.ingredients
-  // );
 
   const [{ isDrag }, dragRef] = useDrag({
     type: "ingredient",
@@ -41,28 +36,6 @@ const { image, price, name, _id } = ingredient;
         ? (ingredientCounter += 2)
         : (ingredientCounter += 1))
   );
-
-  // const handleChoseIngredient = (e) => {
-  //   e.preventDefault();
-  //   console.log('произошло')
-  //   const targetIngredient = ingredients.find(
-  //     (ingredient) => ingredient._id === e.currentTarget.dataset.id
-  //   );
-  //   const selectedBun = chosenIngredients.find(
-  //     (ingredient) => ingredient.type === "bun"
-  //   );
-  //   const selectedBunIndex = chosenIngredients.indexOf(selectedBun);
-
-  //   if (targetIngredient.type === "bun" && selectedBun) {
-  //     const chosenIngredientsClone = chosenIngredients.slice();
-  //     chosenIngredientsClone.splice(selectedBunIndex, 1, targetIngredient);
-  //     dispatch(addIngredient(chosenIngredientsClone));
-  //   } else {
-  //     dispatch(addIngredient([...chosenIngredients, targetIngredient]));
-  //   }
-  // };
-
-
 
   return (
     <NavLink 
@@ -95,7 +68,7 @@ const { image, price, name, _id } = ingredient;
 
 export const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  const ingredients = useSelector((state: any) => state.ingredientsData.ingredients);
+  const ingredients = useSelector((state) => state.ingredientsData.ingredients);
   const [current, setCurrent] = React.useState('bun')
  
   const scrollHandler = (e: UIEvent) => {
@@ -105,8 +78,8 @@ export const BurgerIngredients = () => {
   }
 
   const handleOpenIgredientInfoModal = React.useCallback((item: IIngredient) => {
-    dispatch({type: 'INGREDIENT_DETAILS', ingredient: item });
-
+    // dispatch({type: 'INGREDIENT_DETAILS', ingredient: item });
+      dispatch(changeIngredientDetails(item, true))
   }, [dispatch]);
 
   return (

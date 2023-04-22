@@ -10,6 +10,8 @@ import { RegisterPage } from "../../pages/register/register";
 import { ProfilePage } from "../../pages/profile/profile";
 import { IngredientDetailsPage } from '../../pages/ingredient/ingredient';
 import { NotFound404 } from '../../pages/404/404';
+import { OrderFullInfoPage } from '../../pages/order-full-info/order-full-info'
+import { FeedPage } from '../../pages/feed/feed';
 
 import { AppHeader } from "../header/header";
 
@@ -20,7 +22,7 @@ import { OrderDetails } from "../order-details/order-details"
 import { deleteOrderData } from '../../services/actions/order';
 import { deleteIngredientDetails, changeIngredientDetails } from '../../services/actions/modal';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../../services/hooks/hooks";
 
 import { getUserData } from '../../services/actions/user';
 import { getCookie } from '../../utils/cookie'
@@ -34,10 +36,10 @@ export const App = () => {
   const location = useLocation();
   // let background = location.state && location.state.background ? true : false;
   let background = location.state && location.state.background;
-  const order = useSelector((state: any) => state.orderReducer.order);
-  const isIngredientsModalOpen = useSelector((state: any) => state.modalReducer.isIngredientsModalOpen);
-  const isOrderDetailsModalOpen = useSelector((state: any) => state.modalReducer.isOrderDetailsModalOpen);
-  const ingredient = useSelector((state: any) => state.modalReducer.ingredient);
+  const order = useSelector((state) => state.orderReducer.order);
+  const isIngredientsModalOpen = useSelector((state) => state.modalReducer.isIngredientsModalOpen);
+  const isOrderDetailsModalOpen = useSelector((state) => state.modalReducer.isOrderDetailsModalOpen);
+  const ingredient = useSelector((state) => state.modalReducer.ingredient);
   const modalTitle = 'Детали ингредиента';
   const accessToken = getCookie("accessToken");
 
@@ -49,11 +51,14 @@ export const App = () => {
 
   const closeIngredientModal = () => {
     dispatch(changeIngredientDetails(false))
-    dispatch(deleteIngredientDetails());
+    dispatch(deleteIngredientDetails(true));
   };
 
   useEffect(() => {
-    dispatch<any>(getUserData(accessToken));
+    if(accessToken){
+      dispatch(getUserData(accessToken));
+    }
+    
   
   }, [dispatch]) 
 
@@ -68,6 +73,7 @@ export const App = () => {
         <Route path='/forgot-password' element={<ProtectedRouteAuth element={<ForgotPasswordPage />} to={'/'}/>} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path='/profile' element={<ProtectedRoute element={<ProfilePage />} to={'/login'}/>} />
+        <Route path='/feed' element={<FeedPage />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientDetailsPage />} />
         <Route path="*" element={<NotFound404 />} />
       </Routes>

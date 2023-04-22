@@ -1,17 +1,19 @@
+import { TModalActions } from '../actions/modal';
+import { IModalState } from '../types/types';
 import {
   ORDER_DETAILS,
   INGREDIENT_DETAILS,
   DELETE_INGREDIENT_DETAILS
 } from '../actions/modal';
 
-const initialState = {
+const initialState: IModalState = {
   isIngredientsModalOpen: false,
   isOrderDetailsModalOpen: false,
-  ingredient: {},
+  ingredient: null,
   order: null,
 };
 
-export const modalReducer = (state = initialState, action) => {
+export const modalReducer = (state = initialState, action: TModalActions) => {
 
   switch (action.type) {
     case ORDER_DETAILS: {

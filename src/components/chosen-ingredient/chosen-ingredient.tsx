@@ -1,7 +1,7 @@
 import chosenIngredientStyle from './chosen-ingredient.module.css';
 import { FC } from 'react';
 import { Identifier, XYCoord } from 'dnd-core'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from "../../services/hooks/hooks";
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from "react-dnd";
 import { useRef } from 'react';
@@ -12,7 +12,7 @@ import { IChosenIngredient, IIngredient, DragItem } from '../../services/types/t
 const ChosenIngredient: FC<IChosenIngredient> = ({ ingredient, id, moveIngredient, index }) => {
   const { name, price, image, } = ingredient;
   const dispatch = useDispatch();
-  const chosenIngredients = useSelector((state: any) => state.ingredientsData.chosenIngredients);
+  const chosenIngredients = useSelector((state) => state.ingredientsData.chosenIngredients);
   const ref = useRef<HTMLLIElement>(null);
 
   const [{ handlerId }, drop] = useDrop< DragItem, void, { handlerId: Identifier | null}>({
@@ -70,7 +70,7 @@ const ChosenIngredient: FC<IChosenIngredient> = ({ ingredient, id, moveIngredien
     const selectedIngredientIndex = chosenIngredients.indexOf(item)
     const chosenIngredientsClone = chosenIngredients.slice();
     chosenIngredientsClone.splice(selectedIngredientIndex, 1);
-    dispatch<any>(deleteIngredient(chosenIngredientsClone))
+    dispatch(deleteIngredient(chosenIngredientsClone))
   }
 
 

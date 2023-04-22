@@ -31,7 +31,7 @@ export function setCookie(name: string, value: string | null, props?: any) {
     return matches ? decodeURIComponent(matches[1]) : undefined;
   } 
 
-  export function deleteCookie(name: string) {
+  export function deleteCookie(name: string, value: string | null, props?: any) {
 
     setCookie(name,null, { expires: -1 });
   }

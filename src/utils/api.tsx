@@ -135,3 +135,8 @@ export const patchUsersDataRequest = async (accessToken: string, name: string, e
 });
 return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
+
+export const getOrderInfo = async (order_number: number) => {
+  const res = await fetch(`${api}/orders/${order_number}`);
+  return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
+};

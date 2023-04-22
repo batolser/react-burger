@@ -1,28 +1,25 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../../services/hooks/hooks";
 import styles from './styles.module.css';
 import ingredientDetailsStyles from '../../components/ingredient-details/ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
 import { getIngredients } from '../../services/actions/ingredients';
 import { IIngredient } from '../../services/types/types'
+import { FC } from 'react';
 
-export const IngredientDetailsPage = () => {
+export const IngredientDetailsPage: FC = () => {
     const dispatch = useDispatch();
     useEffect(
         () => {
-          dispatch<any>(getIngredients());
+          dispatch(getIngredients());
         }, [dispatch]
       );
       
     const { ingredientId } = useParams();
-    const ingredients = useSelector((store: any) => store.ingredientsData.ingredients);
+    const ingredients = useSelector((state) => state.ingredientsData.ingredients);
 
     const ingredient = ingredients.find((item: IIngredient) => item._id === ingredientId);
-   
-
-   
-
-     
+   if (ingredient){
     return  (
         ingredient && (
         <div>
@@ -58,4 +55,8 @@ export const IngredientDetailsPage = () => {
           
         )
       )
+    }
+    else {
+        return null;
+    }
 }

@@ -1,6 +1,6 @@
 import { FormEvent } from 'react';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../../services/hooks/hooks";
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Navigate } from "react-router-dom";
 import styles from './styles.module.css';
@@ -9,14 +9,14 @@ import { login } from '../../services/actions/user';
 export const LoginPage = () => {
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');
-    const user = useSelector((state: any) => state.userReducer.user);
-    const token = useSelector((state: any) => state.userReducer.token);
+    const user = useSelector((state) => state.userReducer.user);
+    const token = useSelector((state) => state.userReducer.token);
     
     const dispatch = useDispatch();
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch<any>(login(email, password));
+        dispatch(login(email, password));
       }; 
 
     return (

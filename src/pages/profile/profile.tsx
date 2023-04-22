@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent  } from 'react';
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../../services/hooks/hooks";
 import { Button, EmailInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from './styles.module.css';
@@ -12,7 +12,7 @@ export const ProfilePage = () => {
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState("");
     const [isInfoChanged, setIsInfoChanged] = useState(false);
-    const user = useSelector((state:any) => state.userReducer.user);
+    const user = useSelector((state) => state.userReducer.user);
 
     const dispatch = useDispatch();
     const accessToken = getCookie("accessToken");
@@ -20,13 +20,13 @@ export const ProfilePage = () => {
     const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setName(value);
-        value === user.name ? setIsInfoChanged(false) : setIsInfoChanged(true);
+        value === user!.name ? setIsInfoChanged(false) : setIsInfoChanged(true);
       }
     
       const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setEmail(value);
-        value === user.email ? setIsInfoChanged(false) : setIsInfoChanged(true);
+        value === user!.email ? setIsInfoChanged(false) : setIsInfoChanged(true);
       }
     
       const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,20 +38,25 @@ export const ProfilePage = () => {
 
     const cancel = () => {
    
-        setName(user.name)
-        setEmail(user.email)
+        setName(user!.name)
+        setEmail(user!.email)
         setPassword('')
       }
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch<any>(patchUsersData(accessToken, name, email, password));
+    if (accessToken){
+        dispatch(patchUsersData(accessToken, name, email, password));
+    }
+    
     }; 
 
     const setLogout = () => {
         const refreshToken = getCookie("refreshToken");
-        dispatch<any>(logout(refreshToken));
+        if (refreshToken){
+        dispatch(logout(refreshToken));
         console.log("прошло")
+        }
       }
 
      

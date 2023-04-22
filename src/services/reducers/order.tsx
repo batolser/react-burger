@@ -1,3 +1,5 @@
+import { TOrderActions } from '../actions/order';
+import { IOrderState } from '../types/types';
 import {
   GET_ORDER,
   GET_ORDER_FAILED,
@@ -5,13 +7,13 @@ import {
   DELETE_ORDER_DATA
 } from '../actions/order';
 
-export const initialState = {
+export const initialState: IOrderState = {
   orderRequest: false,
   orderFailed: false,
   order: null
 }
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action: TOrderActions) => {
   switch (action.type) {
     case GET_ORDER: {
       return {

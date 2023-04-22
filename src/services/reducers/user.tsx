@@ -1,3 +1,5 @@
+import { TUserActions } from '../actions/user';
+import { IUserState } from '../types/types';
 import {
     REGISTRATION,
     REGISTRATION_FAILED,
@@ -25,7 +27,7 @@ import {
     PATCH_USER_DATA_FAILED,
   } from '../actions/user';
   
-const initialState = {
+const initialState: IUserState = {
   
   registrationRequest: false,
   registrationFailed: false,
@@ -50,7 +52,7 @@ const initialState = {
 }
 
   
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TUserActions) => {
   switch (action.type) {
 
     case REGISTRATION: {

@@ -1,3 +1,6 @@
+
+import { IIngredientsState } from '../types/types';
+import { TIngredientsActions } from '../actions/ingredients';
 import {
   GET_INGREDIENTS,
   GET_INGREDIENTS_FAILED,
@@ -8,14 +11,14 @@ import {
   DELETE_ALL_INGREDIENTS
 } from '../actions/ingredients';
 
-export const initialState = {
+export const initialState: IIngredientsState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
   chosenIngredients: []
 }
 
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (state = initialState, action: TIngredientsActions) => {
   switch (action.type) {
     case GET_INGREDIENTS: {
       return {
@@ -45,7 +48,8 @@ export const ingredientsReducer = (state = initialState, action) => {
       };
     }
     case DELETE_INGREDIENT: {
-      return { ...state, chosenIngredients: action.payload };
+      return { ...state, 
+        chosenIngredients: action.payload };
     }
     case SORT_INGREDIENTS: {
       return {
