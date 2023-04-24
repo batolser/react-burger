@@ -81,6 +81,8 @@ export interface IModalState {
   isOrderDetailsModalOpen: boolean;
   ingredient:  IIngredient | null;
   order: string | null;
+  isBurgerModalOpen: boolean;
+  burger: number | null;
 }
 
 export interface IOrderState {
@@ -143,6 +145,11 @@ export interface IOrdersState {
 export interface IOrdersItemProps {
   order: IOrder,
   isHistory: boolean,
+  onClick: () => void,
+}
+
+export interface IOrderFullInfoProps {
+  isPopup: boolean,
 }
 
 type TApplicationActions =

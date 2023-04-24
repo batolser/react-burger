@@ -79,7 +79,7 @@ export const BurgerIngredients = () => {
 
   const handleOpenIgredientInfoModal = React.useCallback((item: IIngredient) => {
     // dispatch({type: 'INGREDIENT_DETAILS', ingredient: item });
-      dispatch(changeIngredientDetails(item, true))
+      dispatch(changeIngredientDetails(item))
   }, [dispatch]);
 
   return (

@@ -16,15 +16,15 @@ export const AppHeader = () => {
             <nav>
                 <ul className={headerStyles.list}>
                     <li className="pl-5 pr-5">
-                        <a className={headerStyles.link} href='/' >
+                        <NavLink className={({isActive}) => isActive ? `${headerStyles.link_active}` : `${headerStyles.link}` } to="/">
                             <BurgerIcon type="primary" />
                             <p className="text text_type_main-default ml-2">Конструктор</p>
-                        </a>
+                        </NavLink>
                     </li>
                     <li className='ml-2 pl-5' >
                         <NavLink className={({isActive}) => isActive ? `${headerStyles.link_active}` : `${headerStyles.link}` } to="/feed">
                             <ListIcon type="secondary" />
-                            <p className="text text_type_main-default ml-2 text_color_inactive">Лента заказов</p>
+                            <p className="text text_type_main-default ml-2 ">Лента заказов</p>
                         </NavLink>
                     </li>
                 </ul>

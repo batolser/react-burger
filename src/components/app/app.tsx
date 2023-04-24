@@ -11,7 +11,9 @@ import { ProfilePage } from "../../pages/profile/profile";
 import { IngredientDetailsPage } from '../../pages/ingredient/ingredient';
 import { NotFound404 } from '../../pages/404/404';
 import { OrderFullInfoPage } from '../../pages/order-full-info/order-full-info'
+import { OrderFullInfo } from '../order-full-info/order-full-info'
 import { FeedPage } from '../../pages/feed/feed';
+import { ProfileFeedPage } from '../../pages/profile-feed/profile-feed';
 
 import { AppHeader } from "../header/header";
 
@@ -29,6 +31,7 @@ import { getCookie } from '../../utils/cookie'
 
 import { ProtectedRoute } from '../protected-route-element/protected-route-element';
 import { ProtectedRouteAuth } from '../protected-route-auth/protected-route-auth';
+import { getIngredients } from '../../services/actions/ingredients';
 
 
 export const App = () => {
@@ -37,9 +40,7 @@ export const App = () => {
   // let background = location.state && location.state.background ? true : false;
   let background = location.state && location.state.background;
   const order = useSelector((state) => state.orderReducer.order);
-  const isIngredientsModalOpen = useSelector((state) => state.modalReducer.isIngredientsModalOpen);
-  const isOrderDetailsModalOpen = useSelector((state) => state.modalReducer.isOrderDetailsModalOpen);
-  const ingredient = useSelector((state) => state.modalReducer.ingredient);
+  const { ingredient, isIngredientsModalOpen, isOrderDetailsModalOpen, isBurgerModalOpen } = useSelector((state) => state.modalReducer);
   const modalTitle = 'Детали ингредиента';
   const accessToken = getCookie("accessToken");
 
@@ -50,18 +51,21 @@ export const App = () => {
   };
 
   const closeIngredientModal = () => {
-    dispatch(changeIngredientDetails(false))
-    dispatch(deleteIngredientDetails(true));
+    // dispatch(changeIngredientDetails(false))
+    dispatch(deleteIngredientDetails());
   };
 
   useEffect(() => {
     if(accessToken){
       dispatch(getUserData(accessToken));
     }
-    
-  
   }, [dispatch]) 
-
+  
+  useEffect(
+    () => {
+      dispatch(getIngredients());
+    }, [dispatch]
+  );
 
   return (
     <div className="App">
@@ -73,8 +77,11 @@ export const App = () => {
         <Route path='/forgot-password' element={<ProtectedRouteAuth element={<ForgotPasswordPage />} to={'/'}/>} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path='/profile' element={<ProtectedRoute element={<ProfilePage />} to={'/login'}/>} />
-        <Route path='/feed' element={<FeedPage />} />
+        <Route path='/profile/orders' element={<ProtectedRoute element={<ProfileFeedPage />} to={'/login'}/>} />
+        <Route path='/profile/orders/:id' element={<ProtectedRoute element={<OrderFullInfoPage />} to={'/login'}/>} />
         <Route path='/ingredients/:ingredientId' element={<IngredientDetailsPage />} />
+        <Route path='/feed' element={<FeedPage />} />
+        <Route path="/feed/:orderNumber" element={<OrderFullInfoPage/>} />
         <Route path="*" element={<NotFound404 />} />
       </Routes>
   
@@ -87,6 +94,12 @@ export const App = () => {
       {isOrderDetailsModalOpen && order && (
         <Modal onClose={closeOrderModal}>
           <OrderDetails />
+        </Modal>
+      )
+      }
+      {isBurgerModalOpen && (
+        <Modal onClose={closeIngredientModal} >
+          <OrderFullInfo />
         </Modal>
       )
       }

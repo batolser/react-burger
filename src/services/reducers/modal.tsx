@@ -3,7 +3,8 @@ import { IModalState } from '../types/types';
 import {
   ORDER_DETAILS,
   INGREDIENT_DETAILS,
-  DELETE_INGREDIENT_DETAILS
+  DELETE_INGREDIENT_DETAILS,
+  BURGER_DETAILS
 } from '../actions/modal';
 
 const initialState: IModalState = {
@@ -11,6 +12,8 @@ const initialState: IModalState = {
   isOrderDetailsModalOpen: false,
   ingredient: null,
   order: null,
+  isBurgerModalOpen: false,
+  burger: null
 };
 
 export const modalReducer = (state = initialState, action: TModalActions) => {
@@ -34,6 +37,13 @@ export const modalReducer = (state = initialState, action: TModalActions) => {
         ...state,
         ingredient: {},
         isIngredientsModalOpen: false
+      };
+    }
+    case BURGER_DETAILS: {
+      return {
+        ...state,
+        isBurgerModalOpen: true,
+        burger: action.burger,
       };
     }
     default: {

@@ -43,7 +43,7 @@
 
 import { rootReducer } from './reducers/index';
 import thunk from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
+import { legacy_createStore as createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { socketMiddleware, } from '../services/middleware/socket-middleware';
 import {
@@ -53,10 +53,11 @@ import {
   WS_CONNECTION_CLOSED,
   WS_DISCONNECT,
   WS_GET_MESSAGE,
-  WS_SEND_MESSAGE
+  WS_SEND_MESSAGE,
+  TWebSocket
 } from './actions/orders';
 
-const wsActions = {
+const wsActions: TWebSocket = {
   wsStart: WS_CONNECTION_START,
   onOpen: WS_CONNECTION_SUCCESS,
   onError: WS_CONNECTION_ERROR,

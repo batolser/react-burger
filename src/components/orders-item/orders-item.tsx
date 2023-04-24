@@ -1,11 +1,12 @@
 import styles from './styles.module.css';
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC } from 'react';
 import { IIngredient, IOrdersItemProps } from "../../services/types/types";
 import {useSelector} from "../../services/hooks/hooks";
 import {useLocation, NavLink } from 'react-router-dom';
+import { IngredientIcon } from "../orders-item-img/orders-item-img";
 
-export const OrdersItem: FC<IOrdersItemProps> = ({order, isHistory = false}) => {
+export const OrdersItem: FC<IOrdersItemProps> = ({order, isHistory = false, onClick}) => {
     const location = useLocation();
     const orderIngredients = useSelector((state) => state.ingredientsData.ingredients)
     const {status, number, createdAt, name, ingredients} = order;
@@ -30,36 +31,36 @@ export const OrdersItem: FC<IOrdersItemProps> = ({order, isHistory = false}) => 
       })
       return sum
     }
-    
-    function formatDate(str: string) {
-      return new Date(str).toLocaleString()
-    }
-  
+
     return (
       <li>
         <NavLink className={styles.link} 
-        to={`${location.pathname}/${number}`}
-        state={{ background: location }}
+        to={`${location.pathname}${number}`}
+        state={{ background: location }} onClick={onClick}
        >
-          <div className={styles.header}>
+          <div className={styles.info}>
             <p className="text text_type_digits-default">{`#${number}`}</p>
-            <p className="text text_type_main-default text_color_inactive">{formatDate(createdAt)}</p>
+            <p className="text text_type_main-default text_color_inactive"><FormattedDate date={new Date(createdAt)} /></p>
           </div>
           <h2 className="text text_type_main-medium">{name}</h2>
           {
             (status && isHistory) && <p className="text text_type_main-default">{checkStatus(status)}</p>
           }
-          <div className={styles.footer}>
-            <ul className={styles.ingredients_list}>
+          <div className={styles.details}>
+            <ul className={styles.list}>
               {
                 ingredients.map((ingredient, idx) => {
                     const foundIngredient = findIngredient(ingredient, orderIngredients)
-                    if (idx < 5) {
+                    if (idx < 6) {
                       return (
-                        <li key={idx} style={{zIndex: 999 - idx}} className={styles.ingredients_list_item}>
-                          <img className={styles.ingredients_list_item_image} src={foundIngredient?.image}
-                               alt={foundIngredient?.name}/>
-                        </li>
+                        <IngredientIcon
+                    src={foundIngredient?.image}
+                    srcSet={foundIngredient?.image}
+                    alt={foundIngredient?.name}
+                    overflow={!idx ? ingredients.length - 6 : 0}
+                    extraClass="items_picture"
+                    key={idx}
+                  />
                       )
                     }
                     return null
@@ -67,6 +68,7 @@ export const OrdersItem: FC<IOrdersItemProps> = ({order, isHistory = false}) => 
                 )
               }
             </ul>
+            {/* <div className={styles.items_listt}>{icons}</div> */}
             <div className={styles.total}>
               <span className="text text_type_digits-default">{totalPrice()}</span>
               <CurrencyIcon type="primary"/>

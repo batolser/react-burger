@@ -17,3 +17,7 @@ code {
   align-items: center;
   justify-content: center;
 }
+
+.items_picture {
+  margin-left: -16px;
+}

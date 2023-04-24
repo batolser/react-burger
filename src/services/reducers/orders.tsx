@@ -3,7 +3,12 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_DISCONNECT,
-  WS_GET_MESSAGE, TWSActions
+  WS_GET_MESSAGE,
+  TWSActions,
+  GET_ORDER_INFO,
+  GET_ORDER_INFO_SUCCESS,
+  GET_ORDER_INFO_FAILED,
+  CLEAN_ORDER_INFO
 } from '../actions/orders';
 
 import { IOrder } from '../types/types'
@@ -15,6 +20,10 @@ export type TSocketState = {
   totalToday: number;
   error: boolean;
   errMessage: string | null;
+  orderInfo: IOrder | null,
+  orderInfoRequest: boolean;
+  orderInfoFailed: boolean;
+  
  
 };
 
@@ -25,7 +34,9 @@ const initialState: TSocketState = {
   totalToday: 0,
   error: false,
   errMessage: null,
-
+  orderInfo: null,
+  orderInfoRequest: false,
+  orderInfoFailed: false,
 };
 
 export const ordersReducer = (state = initialState, action: TWSActions): TSocketState => {
@@ -63,6 +74,31 @@ export const ordersReducer = (state = initialState, action: TWSActions): TSocket
         total: action.payload.total,
         totalToday: action.payload.totalToday
       };
+      case GET_ORDER_INFO: 
+      return {
+        ...state,
+        orderInfoRequest: true,
+        orderInfoFailed: false,
+      };
+    case GET_ORDER_INFO_SUCCESS: 
+      return {
+        ...state,
+        orderInfoRequest: true,
+        orderInfo: action.payload,
+      };
+    case GET_ORDER_INFO_FAILED:
+      return {
+        ...state,
+        orderInfoRequest: false,
+        orderInfoFailed: true,
+      };
+    case CLEAN_ORDER_INFO:
+      return {
+        ...state,
+        orderInfoRequest: false,
+        orderInfoFailed: false,
+        orderInfo: null,
+      }
     default:
       return state;
   }

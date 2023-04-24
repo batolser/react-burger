@@ -7,7 +7,7 @@ import { BurgerIngredients } from "../burger-ingredients/burger-ingredients";
 import { BurgerConstructor } from "../burger-constructor/burger-constructor";
 import { useDispatch, useSelector } from "../../services/hooks/hooks";
 import { addIngredient } from '../../services/actions/ingredients';
-import { getIngredients } from '../../services/actions/ingredients';
+
 import appStyles from '../app/app.module.css';
 import { IIngredient } from '../../services/types/types'
 
@@ -16,11 +16,7 @@ export const Main = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.ingredientsData.ingredients);
 
-  React.useEffect(
-    () => {
-      dispatch(getIngredients());
-    }, [dispatch]
-  );
+  
  
   const chosenIngredients = useSelector((state) => state.ingredientsData.chosenIngredients);
 

@@ -4,6 +4,7 @@ import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-de
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { sendOrder } from '../../services/actions/order';
 import { deleteAllIngredients } from '../../services/actions/ingredients';
+import { changeOrderDetails } from '../../services/actions/modal'
 import { useDispatch, useSelector } from "../../services/hooks/hooks";
 import { useDrop } from "react-dnd";
 import { DndProvider } from "react-dnd";
@@ -28,7 +29,7 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }
   const handleSendOrder = async () => {
     const ingredientsIds = chosenIngredients.map((ingredient: IIngredient) => ingredient._id)
     dispatch(sendOrder(ingredientsIds));
-    dispatch({type: 'ORDER_DETAILS'});
+    dispatch(changeOrderDetails());
     dispatch(deleteAllIngredients());
   }
 

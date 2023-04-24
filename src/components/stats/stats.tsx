@@ -8,18 +8,18 @@ export const Stats = () => {
     const orders = useSelector((state) => state.ordersReducer.orders)
   
     return (
-      <div className={styles.container}>
+      <div className={styles.wrapper}>
       
               <>
-                <div className={styles.order_numbers}>
+                <div className={styles.orders}>
                   {
                     orders?.some((order: IOrder) => order.status === 'done') && (
                       <div className={styles.ready}>
                         <p className="text text_type_main-medium pb-6">
                           Готовы:
                         </p>
-                        <div className={styles.numbers_container}>
-                          <ul className={styles.list_accent}>
+                        <div className={styles.orders_container}>
+                          <ul className={styles.list_ready}>
                             {
                               orders?.map((order: IOrder, idx: number) => {
                                 if (idx < 10 && order.status === 'done') {
@@ -31,7 +31,7 @@ export const Stats = () => {
                               })
                             }
                           </ul>
-                          <ul className={styles.list_accent}>
+                          <ul className={styles.list_ready}>
                             {
                               orders?.map((order: IOrder, idx: number) => {
                                 if (idx >= 10 && idx < 20 && order.status === 'done') {
@@ -49,7 +49,7 @@ export const Stats = () => {
                   }
                   {
                     orders?.some((order: IOrder) => order.status === 'pending') && (
-                      <div className={styles.atWork}>
+                      <div className={styles.in_process}>
                         <p className="text text_type_main-medium pb-6">
                           В работе:
                         </p>

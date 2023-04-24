@@ -44,17 +44,17 @@
 //     }) as Middleware;
 //   };
 
-import { Middleware } from "redux";
-import { TWebSocket } from "../actions/orders";
-
+import type {Middleware, MiddlewareAPI} from 'redux';
+import { TWebSocket, WS_CONNECTION_START } from "../actions/orders";
+import { AppDispatch, RootState } from "../types/types";
 
 
 export const socketMiddleware = (wsActions: TWebSocket): Middleware => {
-  return store => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
-    let url = undefined;
-    let isConnected = false
-    let reconnectTimer = 0
+    let url = '';
+    let reconnect = false
+    let reconnectTimer = -1
 
     return next => action => {
       const { dispatch } = store;
@@ -63,22 +63,18 @@ export const socketMiddleware = (wsActions: TWebSocket): Middleware => {
 
       if (type === wsStart) {
         url = payload;
-        // socket = new WebSocket(action.payload!);
         socket = new WebSocket(url);
-        isConnected = true
-          window.clearTimeout(reconnectTimer)
-          reconnectTimer = 0
-          console.log('1')
-      } else if (type === onClose) {
-        socket && socket.close(1000, 'CLOSE_NORMAL');
-      }
+        reconnect = true
+        window.clearTimeout(reconnectTimer)
+        console.log('1')
+      } 
       if (socket) {
         socket.onopen = event => {
           dispatch({ type: onOpen, payload: event });
           console.log('2')
         };
         socket.onerror = event => {
-          dispatch({ type: onError, payload: event });
+          console.log('ws error', event)
    
         };
         socket.onmessage = event => {
@@ -90,12 +86,12 @@ export const socketMiddleware = (wsActions: TWebSocket): Middleware => {
           if (event.code !== 1000) {
             console.log(event.reason)
             console.log(event.code)
-            dispatch({ type: onError, payload: event });
+            dispatch({ type: onError, payload: event.reason });
           }
-          if (isConnected) {
-            dispatch({ type: onOpen, payload: event });
+          dispatch({ type: onClose, payload: event })
+          if (reconnect) {
             reconnectTimer = window.setTimeout(() => {
-              dispatch({ type: onOpen, payload: event });
+              dispatch({ type: WS_CONNECTION_START, payload: url });
             }, 3000)
           }
         };
@@ -104,12 +100,10 @@ export const socketMiddleware = (wsActions: TWebSocket): Middleware => {
           socket.send(JSON.stringify(message));
         }
       }
-      if (socket && wsDisconnect.match(action)) {
+      if (socket && wsDisconnect === action) {
         console.log('Websocket disconnect')
         window.clearTimeout(reconnectTimer)
-          isConnected = false
-          reconnectTimer = 0
-        // dispatch({ type: onClose})
+          reconnect = false
         socket.close()
       }
       next(action);
