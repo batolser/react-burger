@@ -18,7 +18,7 @@ export function FeedPage() {
         dispatch(cleanOrderInfo())
 
       }
-    }, [])
+    }, [dispatch])
     
     return (
       <article className={styles.wrapper}>

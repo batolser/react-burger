@@ -27,7 +27,7 @@ const orders = useSelector((state) => state.ordersReducer.orders);
       dispatch(wsDisconnect());
     
     };
-  }, [])
+  }, [dispatch])
 
   const setLogout = () => {
     const refreshToken = getCookie("refreshToken");
