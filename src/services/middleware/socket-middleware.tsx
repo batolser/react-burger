@@ -54,7 +54,7 @@ export const socketMiddleware = (wsActions: TWebSocket): Middleware => {
           socket.send(JSON.stringify(message));
         }
       }
-      if (socket && wsDisconnect === action) {
+      if (socket && wsDisconnect === action.type) {
 
         window.clearTimeout(reconnectTimer)
           reconnect = false

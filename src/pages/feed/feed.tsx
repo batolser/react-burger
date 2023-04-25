@@ -8,23 +8,17 @@ import { wsStart, wsDisconnect, cleanOrderInfo } from '../../services/actions/or
 import { ALL_ORDERS_URL } from '../../utils/constants'
 
 export function FeedPage() {
+
     const dispatch = useDispatch()
+
     useEffect(() => {
       dispatch(wsStart(ALL_ORDERS_URL));
-  
-    }, [])
-
-    useEffect(() => {
-
       return () => {
         dispatch(wsDisconnect())
         dispatch(cleanOrderInfo())
-        console.log('вы можете пояснить, почему не закрывается соединение? все же правильно. это события должны проимходить при размонтировании')
+
       }
     }, [])
-
-    
-
     
     return (
       <article className={styles.wrapper}>
