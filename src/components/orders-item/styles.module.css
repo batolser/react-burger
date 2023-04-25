@@ -78,3 +78,7 @@
   .items_listt > .items_picture:last-child {
     margin-left: 0;
   }
+
+  .order__item {
+    width: 100%;
+  }

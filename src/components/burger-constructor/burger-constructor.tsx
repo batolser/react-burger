@@ -26,12 +26,7 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }
   [chosenIngredients]);
 
 
-  const handleSendOrder = async () => {
-    const ingredientsIds = chosenIngredients.map((ingredient: IIngredient) => ingredient._id)
-    dispatch(sendOrder(ingredientsIds));
-    dispatch(changeOrderDetails());
-    dispatch(deleteAllIngredients());
-  }
+  
 
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",
@@ -43,11 +38,13 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }
     })
   });
 
+ const bun = chosenIngredients.filter((ingredient: IIngredient) => ingredient.type === 'bun')
+
 
   const moveIngredient = useCallback((dragIndex: number, hoverIndex: number) => {
-    const bun = chosenIngredients.filter((ingredient: IIngredient) => ingredient.type === 'bun')
-    const mainIngredients = chosenIngredients.filter((ingredient: IIngredient) => ingredient.type !== 'bun')
-    const sortedIngredients = update(mainIngredients, {
+   
+  const mainIngredients = chosenIngredients.filter((ingredient: IIngredient) => ingredient.type !== 'bun')
+  const sortedIngredients = update(mainIngredients, {
       $splice: [
         [dragIndex, 1],
         [hoverIndex, 0, mainIngredients[dragIndex]],
@@ -59,6 +56,19 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }
 
   }, [chosenIngredients, dispatch]);
 
+  const ingredientsWithoutBuns = chosenIngredients.filter((ingredient: IIngredient) => ingredient.type !== 'bun')
+  const ingredientsWithoutBunsIds = ingredientsWithoutBuns.map((ingredient: IIngredient) => ingredient._id)
+  const ingredientsBunsIds = bun.map((ingredient: IIngredient) => ingredient._id)
+  const ingredientsIds = [...ingredientsBunsIds, ...ingredientsWithoutBunsIds, ...ingredientsBunsIds]
+
+   
+
+  const handleSendOrder = async () => {
+  
+    dispatch(sendOrder(ingredientsIds));
+    dispatch(changeOrderDetails());
+    dispatch(deleteAllIngredients());
+  }
 
   const borderColor = isHover ? '#4C4CFF' : 'transparent';
 

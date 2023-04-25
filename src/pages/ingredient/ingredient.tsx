@@ -8,12 +8,6 @@ import { IIngredient } from '../../services/types/types'
 import { FC } from 'react';
 
 export const IngredientDetailsPage: FC = () => {
-    const dispatch = useDispatch();
-    useEffect(
-        () => {
-          dispatch(getIngredients());
-        }, [dispatch]
-      );
       
     const { ingredientId } = useParams();
     const ingredients = useSelector((state) => state.ingredientsData.ingredients);

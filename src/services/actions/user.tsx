@@ -368,7 +368,7 @@ export const registararion = (email: string, password: string, name: string) => 
                 // @ts-ignore
                 dispatch(refreshToken(getCookie("refreshToken")))
               }
-              console.log(err)
+              console.error()
           })
     }
   }

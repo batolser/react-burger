@@ -4,7 +4,8 @@ import {
   ORDER_DETAILS,
   INGREDIENT_DETAILS,
   DELETE_INGREDIENT_DETAILS,
-  BURGER_DETAILS
+  BURGER_DETAILS,
+  DELETE_BURGER_DETAILS
 } from '../actions/modal';
 
 const initialState: IModalState = {
@@ -44,6 +45,13 @@ export const modalReducer = (state = initialState, action: TModalActions) => {
         ...state,
         isBurgerModalOpen: true,
         burger: action.burger,
+      };
+    }
+    case DELETE_BURGER_DETAILS: {
+      return {
+        ...state,
+        isBurgerModalOpen: false,
+        burger: null,
       };
     }
     default: {

@@ -1,10 +1,10 @@
 import React from 'react';
 import orderDetailsStyles from './order-details.module.css';
 import { DoneIcon } from '../done/done';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks/hooks';
 
 export const OrderDetails = () => {
-    const order = useSelector((state:any) => state.orderReducer.order);
+    const order = useSelector((state) => state.orderReducer.order);
 
     return (
         <div className={orderDetailsStyles.order}>

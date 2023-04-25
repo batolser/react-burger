@@ -22,7 +22,7 @@ import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { OrderDetails } from "../order-details/order-details"
 
 import { deleteOrderData } from '../../services/actions/order';
-import { deleteIngredientDetails, changeIngredientDetails } from '../../services/actions/modal';
+import { deleteIngredientDetails, deleteBurgerDetails } from '../../services/actions/modal';
 
 import { useDispatch, useSelector } from "../../services/hooks/hooks";
 
@@ -55,6 +55,10 @@ export const App = () => {
     dispatch(deleteIngredientDetails());
   };
 
+  const closeBurgerModalOpen = () => {
+    dispatch(deleteBurgerDetails());
+  };
+
   useEffect(() => {
     if(accessToken){
       dispatch(getUserData(accessToken));
@@ -78,7 +82,7 @@ export const App = () => {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path='/profile' element={<ProtectedRoute element={<ProfilePage />} to={'/login'}/>} />
         <Route path='/profile/orders' element={<ProtectedRoute element={<ProfileFeedPage />} to={'/login'}/>} />
-        <Route path='/profile/orders/:id' element={<ProtectedRoute element={<OrderFullInfoPage />} to={'/login'}/>} />
+        <Route path='/profile/orders/:orderNumber' element={<ProtectedRoute element={<OrderFullInfoPage />} to={'/login'}/>} />
         <Route path='/ingredients/:ingredientId' element={<IngredientDetailsPage />} />
         <Route path='/feed' element={<FeedPage />} />
         <Route path="/feed/:orderNumber" element={<OrderFullInfoPage/>} />
@@ -98,7 +102,7 @@ export const App = () => {
       )
       }
       {isBurgerModalOpen && (
-        <Modal onClose={closeIngredientModal} >
+        <Modal onClose={closeBurgerModalOpen} >
           <OrderFullInfo />
         </Modal>
       )

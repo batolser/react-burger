@@ -4,7 +4,7 @@ import {useEffect} from 'react';
 import styles from './styles.module.css';
 import { OrdersList } from "../../components/orders-list/orders-list";
 import { Stats } from "../../components/stats/stats";
-import { wsStart, wsDisconnect } from '../../services/actions/orders';
+import { wsStart, wsDisconnect, cleanOrderInfo } from '../../services/actions/orders';
 import { ALL_ORDERS_URL } from '../../utils/constants'
 
 export function FeedPage() {
@@ -12,10 +12,19 @@ export function FeedPage() {
     useEffect(() => {
       dispatch(wsStart(ALL_ORDERS_URL));
   
+    }, [])
+
+    useEffect(() => {
+
       return () => {
         dispatch(wsDisconnect())
+        dispatch(cleanOrderInfo())
+        console.log('вы можете пояснить, почему не закрывается соединение? все же правильно. это события должны проимходить при размонтировании')
       }
-    }, [dispatch])
+    }, [])
+
+    
+
     
     return (
       <article className={styles.wrapper}>

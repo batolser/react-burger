@@ -1,5 +1,6 @@
 import { postOrderInfo } from '../../utils/api';
 import {AppDispatch } from "../types/types";
+import { getCookie } from "../../utils/cookie";
 
 export const GET_ORDER: 'GET_ORDER' = 'GET_ORDER';
 export const GET_ORDER_FAILED: 'GET_ORDER_FAILED' = 'GET_ORDER_FAILED';
@@ -26,14 +27,14 @@ export type TOrderActions =
 | IGetOrderDetailsFailed
 | IDeleteOrderDetails;
 
-export const sendOrder = (data: string[]) => {
+export const sendOrder = (data: string[] ) => {
   return function(dispatch: AppDispatch) {
 
     dispatch({
       type: GET_ORDER
     })
-
-    postOrderInfo(data).then( res  => {
+        // @ts-ignore
+    postOrderInfo(data, getCookie("accessToken")).then( res  => {
       if (res && res.success) {
         dispatch({
           type: GET_ORDER_SUCCESS,
@@ -47,7 +48,9 @@ export const sendOrder = (data: string[]) => {
     }).catch( err => {
             dispatch({
                 type: GET_ORDER_FAILED
+              
             })
+       
         })
   }
 } 

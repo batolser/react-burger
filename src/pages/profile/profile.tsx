@@ -13,14 +13,12 @@ import {ProfileFeedPage} from '../profile-feed/profile-feed'
 export const ProfilePage = () => {
    
     const dispatch = useDispatch();
-    // let background = location.state && location.state.background;
-
 
     const setLogout = () => {
         const refreshToken = getCookie("refreshToken");
         if (refreshToken){
         dispatch(logout(refreshToken));
-        console.log("прошло")
+      
         }
       }
     
@@ -33,7 +31,7 @@ export const ProfilePage = () => {
                     <li className={styles.nav_item}>
                         <NavLink
                     
-                    className={({isActive}) => isActive ? `${styles.link_active}` : `${styles.link}` }
+                    className={({isActive}) => isActive ? `${styles.link_active} text text_type_main-medium` : `${styles.link} text text_type_main-medium` }
                     to='/profile'
                  
                         >
@@ -42,7 +40,7 @@ export const ProfilePage = () => {
                     </li>
                     <li className={styles.nav_item}>
                         <NavLink
-                        className={({isActive}) => isActive ? `${styles.link_active}` : `${styles.link}` }
+                        className={({isActive}) => isActive ? `${styles.link_active} text text_type_main-medium` : `${styles.link} text text_type_main-medium` }
                         to='/profile/orders'
                         >
                         История заказов

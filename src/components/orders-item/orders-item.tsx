@@ -33,9 +33,9 @@ export const OrdersItem: FC<IOrdersItemProps> = ({order, isHistory = false, onCl
     }
 
     return (
-      <li>
+      <li className={styles.order__item} >
         <NavLink className={styles.link} 
-        to={`${location.pathname}${number}`}
+        to={`${location.pathname}/${number}`}
         state={{ background: location }} onClick={onClick}
        >
           <div className={styles.info}>

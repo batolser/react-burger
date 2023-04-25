@@ -16,7 +16,7 @@ export const OrdersList = () => {
 
     return ( 
         <div className={`${styles.wrapper} mr-15`}>
-              <ul className={`${styles.list} pt-6 pb-10 pr-4 pl-4`}>
+              <ul className={`${styles.list} pt-6 pb-10 pr-4 pl-4 custom-scroll`}>
                 {
                   orders?.map((order: IOrder, idx: number) => (
                     <OrdersItem key={idx} isHistory={false} order={order} onClick={() => { handleOpenBurgerInfoModal(order.number) }}/>
