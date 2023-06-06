@@ -1,0 +1,21 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 1240px;
+    margin: 40px auto 0;
+  }
+
+  .title {
+    align-self: flex-start;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+    max-width: 100%;
+  }
+  
+ 
