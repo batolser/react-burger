@@ -79,7 +79,7 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }
   ? `${(chosenIngredients.find((ingredient: IIngredient) => ingredient.type === 'bun'))[property]} ${trueValue}` : falseValue
 
   return (
-    <section className={burgerConstructorStyles.burger__constructor} >
+    <section className={burgerConstructorStyles.burger__constructor}  test-id={'constructor'}>
       <DndProvider backend={HTML5Backend}>
         <div className={burgerConstructorStyles.ingredients} ref={dropRef} style={{ borderColor }}>
           <div>

@@ -16,8 +16,22 @@ export const OrdersItem: FC<IOrdersItemProps> = ({order, isHistory = false, onCl
     }
   
     const checkStatus = (status: string) => {
-      if (status === 'done') {
+      if (status === 'pending') {
+        return 'Готовится'
+      } else if( status === 'done' ) {
+        return 'Выполнен'
+      }
+      else {
         return 'Создан'
+      }
+    }
+    const checkStyles = (status: string) => {
+      if (status === 'done') {
+        return {
+          color: '#00CCCC'
+        }
+      } else {
+        return {}
       }
     }
   
@@ -44,7 +58,12 @@ export const OrdersItem: FC<IOrdersItemProps> = ({order, isHistory = false, onCl
           </div>
           <h2 className="text text_type_main-medium">{name}</h2>
           {
-            (status && isHistory) && <p className="text text_type_main-default">{checkStatus(status)}</p>
+            (status && isHistory) && 
+            <p className={`text text_type_main-default mb-15 ${styles.status}`}
+            style={checkStyles(status)}
+         >{
+           checkStatus(status)
+         }</p>
           }
           <div className={styles.details}>
             <ul className={styles.list}>

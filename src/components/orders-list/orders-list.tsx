@@ -12,6 +12,7 @@ export const OrdersList = () => {
 
     const handleOpenBurgerInfoModal = React.useCallback((item: number) => {
         dispatch(changeBurgerDetails(item))
+     
     }, [dispatch]);
 
     return ( 

@@ -38,7 +38,7 @@ export const socketMiddleware = (wsActions: TWebSocket): Middleware => {
           dispatch({ type: onMessage, payload: parsedData });
         };
         socket.onclose = event => {
-          if (event.code !== 1000) {
+          if (event.code !== 1005) {
             console.error()
             dispatch({ type: onError, payload: event.reason });
           }

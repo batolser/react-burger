@@ -13,6 +13,8 @@ export const initialState: IOrderState = {
   order: null
 }
 
+
+
 export const orderReducer = (state = initialState, action: TOrderActions) => {
   switch (action.type) {
     case GET_ORDER: {
@@ -29,6 +31,7 @@ export const orderReducer = (state = initialState, action: TOrderActions) => {
         orderRequest: false,
 
       };
+      
     }
     case GET_ORDER_FAILED: {
       return {

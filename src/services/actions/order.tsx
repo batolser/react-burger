@@ -40,6 +40,7 @@ export const sendOrder = (data: string[] ) => {
           type: GET_ORDER_SUCCESS,
           order: res.order.number
         })
+     
       } else {
         dispatch({
           type: GET_ORDER_FAILED

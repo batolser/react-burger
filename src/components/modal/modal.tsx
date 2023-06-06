@@ -27,7 +27,7 @@ export const Modal: FC<IModalProps> = ({ title, children, onClose }) => {
             <ModalOverlay onClick={onClose} />
             <div className={`${modalStyles.modal} pr-10 pl-10 pt-10 pb-15`} >
                 <h2 className={`${modalStyles.title} text text_type_main-large`}>{title}</h2>
-                <div className={modalStyles.modal__btn} >
+                <div className={modalStyles.modal__btn} test-id="close-modal">
                     <CloseIcon onClick={onClose} type="primary" />
                 </div>
                 {children}

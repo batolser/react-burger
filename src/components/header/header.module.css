@@ -59,9 +59,9 @@
 }
 
 @media(max-width: 1024px){
-    .link p, .avtorisation p {
+    /* .link p {
       display: none;
-    }
+    } */
     .header {
         padding: 0 20px;
       }
