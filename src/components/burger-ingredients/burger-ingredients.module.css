@@ -45,11 +45,6 @@
   margin: 0 auto;
 }
 
-.link {
-  color: #F2F2F3;
-  text-decoration: none;
-}
-
 @media(max-width: 1240px){
     .burger__ingredients {
       margin: 0 auto;
