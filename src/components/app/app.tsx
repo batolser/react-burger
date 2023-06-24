@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Route, Routes, useLocation, Navigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import { Main } from "../main/main";
 import { LoginPage } from "../../pages/login/login";
@@ -37,8 +37,8 @@ import { getIngredients } from '../../services/actions/ingredients';
 export const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  // let background = location.state && location.state.background ? true : false;
-  let background = location.state && location.state.background;
+  const navigate = useNavigate();
+  const state = location.state as { background?: Location };
   const order = useSelector((state) => state.orderReducer.order);
   const { ingredient, isIngredientsModalOpen, isOrderDetailsModalOpen, isBurgerModalOpen } = useSelector((state) => state.modalReducer);
   const modalTitle = 'Детали ингредиента';
@@ -46,17 +46,17 @@ export const App = () => {
 
 
   const closeOrderModal = () => {
-    // setIsModalOpen(false);
     dispatch(deleteOrderData());
   };
 
   const closeIngredientModal = () => {
-    // dispatch(changeIngredientDetails(false))
     dispatch(deleteIngredientDetails());
+    state?.background && navigate(-1);
   };
 
   const closeBurgerModalOpen = () => {
     dispatch(deleteBurgerDetails());
+    state?.background && navigate(-1);
   };
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export const App = () => {
   return (
     <div className="App">
       <AppHeader />
-      <Routes location={background || location}>
+      <Routes location={state?.background || location}>
         <Route path="/" element={<Main />} />
         <Route path='/login' element={<ProtectedRouteAuth element={<LoginPage />} to={'/'}/>} />
         <Route path='/register' element={<ProtectedRouteAuth element={<RegisterPage />} to={'/'}/>} />
@@ -88,25 +88,42 @@ export const App = () => {
         <Route path="/feed/:orderNumber" element={<OrderFullInfoPage/>} />
         <Route path="*" element={<NotFound404 />} />
       </Routes>
-  
-      {isIngredientsModalOpen && ingredient && background && (
-        <Modal title={modalTitle} onClose={closeIngredientModal} >
-          <IngredientDetails />
-        </Modal>
-      )
-      }
+      
+      {state?.background && 
+      (
+        <Routes>
+          <Route path="/ingredients/:ingredientId" element={(
+            <Modal title={modalTitle} onClose={closeIngredientModal} >
+              <IngredientDetails />
+            </Modal >
+          )} />
+        </Routes>
+      )}
       {isOrderDetailsModalOpen && order && (
         <Modal onClose={closeOrderModal}>
           <OrderDetails />
         </Modal>
       )
       }
-      {isBurgerModalOpen && (
-        <Modal onClose={closeBurgerModalOpen} >
-          <OrderFullInfo />
-        </Modal>
-      )
-      }
+       {state?.background && (
+        <Routes>
+          <Route path="/feed/:orderNumber" element={(
+            <Modal onClose={closeBurgerModalOpen} >
+            <OrderFullInfo />
+          </Modal>
+          )} />
+        </Routes>
+      )}
+      {state?.background && (
+        <Routes>
+          <Route path="/profile/orders/:orderNumber" element={(
+            <Modal onClose={closeBurgerModalOpen} >
+            <OrderFullInfo />
+          </Modal>
+          )} />
+        </Routes>
+      )}
+     
      
     </div>
   );
