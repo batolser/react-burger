@@ -1,4 +1,4 @@
-import {ordersReducer} from './orders';
+import {ordersReducer, initialState} from './orders';
 
 import {
     WS_CONNECTION_SUCCESS,
@@ -13,18 +13,7 @@ import {
   } from '../actions/orders';
 
   describe('orders reducer', () => {
-    const initialState = {
-        wsConnected: false,
-        orders: [],
-        total: 0,
-        totalToday: 0,
-        error: false,
-        errMessage: null,
-        orderInfo: null,
-        orderInfoRequest: false,
-        orderInfoFailed: false,
-      };
-    
+
     it('should return the initial state', () => {
       expect(ordersReducer(undefined, {})).toEqual(initialState)
     })

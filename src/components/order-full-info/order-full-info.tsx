@@ -3,14 +3,16 @@ import styles from './styles.module.css';
 import {CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import {useParams} from 'react-router-dom';
 import { useDispatch, useSelector } from "../../services/hooks/hooks";
-import {IIngredient, IOrderFullInfoProps} from '../../services/types/types';
+import {IIngredient} from '../../services/types/types';
 import {getOrdersInfo} from "../../services/actions/orders";
 
-export const OrderFullInfo = () => {
+  // @ts-ignore
+export const OrderFullInfo: FC = () => {
   const dispatch = useDispatch()
-  // const {burger} = useParams();
+  const {orderNumber}: any = useParams();
   const { burger } = useSelector((state) => state.modalReducer);
-
+  const actualBurger = orderNumber | burger;
+console.log(orderNumber)
   
   const orderInfo = useSelector(state => state.ordersReducer.orderInfo)
 
@@ -49,12 +51,13 @@ export const OrderFullInfo = () => {
 
 
   useEffect(() => {
-    burger && dispatch(getOrdersInfo(+burger));
-  }, [dispatch, burger])
-
+    actualBurger && dispatch(getOrdersInfo(+actualBurger));
+  }, [dispatch, actualBurger])
+  
+  if (actualBurger !== 0){
   return (
     <>
-      {orderInfo &&
+      {actualBurger > 0 && orderInfo &&
 
          ( <div className={styles.wrapper}>
               <p
@@ -111,4 +114,5 @@ export const OrderFullInfo = () => {
       }
     </>
   );
+    }
 };

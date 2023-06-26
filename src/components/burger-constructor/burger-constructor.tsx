@@ -14,9 +14,10 @@ import update from 'immutability-helper';
 import { sortIngredients } from '../../services/actions/ingredients';
 import { getCookie } from '../../utils/cookie';
 import { IBurgerConstructorProps, IIngredient } from '../../services/types/types'
+import { useNavigate } from "react-router-dom";
 
 export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }) => {
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const accessToken = getCookie("accessToken");
   const chosenIngredients = useSelector((state) => state.ingredientsData.chosenIngredients);
@@ -64,10 +65,15 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }
    
 
   const handleSendOrder = async () => {
-  
+  if(accessToken){
     dispatch(sendOrder(ingredientsIds));
     dispatch(changeOrderDetails());
     dispatch(deleteAllIngredients());
+  }
+  else {
+    navigate('/login')
+  }
+    
   }
 
   const borderColor = isHover ? '#4C4CFF' : 'transparent';
@@ -122,7 +128,7 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }
               <CurrencyIcon type="primary" />
             </div>
             {
-            accessToken && chosenIngredients.length > 0 &&
+            chosenIngredients.length > 0 &&
               <Button htmlType="button" type="primary" size="large" id="order" onClick={handleSendOrder} >
               Оформить заказ
             </Button>

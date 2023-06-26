@@ -1,14 +1,23 @@
 import React from 'react';
 import ingredientDetailsStyles from './ingredient-details.module.css';
 import { useSelector } from '../../services/hooks/hooks';
+import { useParams } from 'react-router-dom';
+import { IIngredient } from '../../services/types/types'
+import { FC } from 'react';
 
-
-
-export const IngredientDetails = () => {
+  // @ts-ignore
+export const IngredientDetails: FC = () => {
+    const { ingredientId } = useParams();
+    const ingredients = useSelector((state) => state.ingredientsData.ingredients);
     const {ingredient} = useSelector((state) => state.modalReducer);
-    const { image_large, name, calories, proteins, fat, carbohydrates } = ingredient
+    const actualIngredient = ingredientId ? ingredients.find((item: IIngredient) => item._id === ingredientId) : ingredient;
+ 
+if (actualIngredient){
+
+
+    const { image_large, name, calories, proteins, fat, carbohydrates } = actualIngredient
     return (
-        
+        <>
         <div className={ingredientDetailsStyles.card}>
             <img className={ingredientDetailsStyles.img} src={image_large} alt={name} />
             <div className={ingredientDetailsStyles.details}>
@@ -33,6 +42,8 @@ export const IngredientDetails = () => {
                 </div>
             </div>
         </div>
+        </>
     );
+}
 }
 

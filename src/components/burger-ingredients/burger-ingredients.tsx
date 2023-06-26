@@ -40,7 +40,7 @@ const { image, price, name, _id } = ingredient;
   return (
     <NavLink 
          
-            to={`/ingredients/${ingredient._id}`}
+            to={`ingredients/${ingredient._id}`}
             state={{ background: location }}
        id={_id} 
     onClick={onClick} className={`${burgerIngredientsStyles.card} ${burgerIngredientsStyles.link} ${

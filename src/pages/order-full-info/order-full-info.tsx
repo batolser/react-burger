@@ -9,6 +9,7 @@ import {getOrdersInfo} from "../../services/actions/orders";
 export const OrderFullInfoPage = () => {
   const dispatch = useDispatch()
   const {orderNumber} = useParams();
+  console.log(orderNumber)
   
   const orderInfo = useSelector(state => state.ordersReducer.orderInfo)
 

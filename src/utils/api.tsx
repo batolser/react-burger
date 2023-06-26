@@ -1,11 +1,10 @@
 
 import { getCookie, setCookie } from "./cookie";
+import { checkResponse } from "./check-response";
 
 export const API = 'https://norma.nomoreparties.space/api';
 
-const checkResponse = (res: Response) => {
-  return res.ok ? res.json() : res.json().then(err => Promise.reject(`Ошибка загрузки данных с сервера: ${err.status}`))
-}
+
 
 export const fetchWithRefresh = async (url: string, options: any) => {
   try {
@@ -63,7 +62,7 @@ export const registerRequest = async (email: string, password: string, name: str
         name
       })
 });
-return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
+return await checkResponse(res);
 };
 
 
@@ -78,7 +77,7 @@ export const loginRequest = async (email: string, password: string) => {
         password
       })
 });
-return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
+return await checkResponse(res);
 };
 
 
@@ -93,7 +92,7 @@ export const forgotPasswordRequest = async (email: string) => {
         email
       })
 });
-return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
+return await checkResponse(res);
 };
 
 export const resetPasswordRequest = async (password: string, code: string) => {
@@ -164,5 +163,5 @@ export const patchUsersDataRequest = async (accessToken: string, name: string, e
 
 export const getOrderInfo = async (order_number: number) => {
   const res = await fetch(`${API}/orders/${order_number}`);
-  return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
+  return await checkResponse(res);
 };
