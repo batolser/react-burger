@@ -1,4 +1,4 @@
-import {userReducer} from './user';
+import {userReducer, initialState} from './user';
 
 import {
   REGISTRATION,
@@ -35,28 +35,6 @@ const MOCK_USER = {
 }
 
   describe('user reducer', () => {
-    const initialState = {
-      registrationRequest: false,
-      registrationFailed: false,
-      loginRequest: false,
-      loginRequestFailed: false,
-      forgotPasswordRequest: false,
-      forgotPasswordRequestFailed: false,
-      resetPasswordRequest: false,
-      resetPasswordRequestFailed: false,
-      refreshTokenRequest: false,
-      refreshTokenRequestFailed: false,
-      logoutRequest: false,
-      logoutRequestFailed: false,
-      getUsersDataRequest: false,
-      getUsersDataRequestFailed: false,
-      patchUsersDataRequest: false,
-      patchUsersDataRequestFailed: false,
-      user: null,
-      isLogin: false,
-      isPasswordForgot: false,
-      token: null
-      };
     
     it('should return the initial state', () => {
       expect(userReducer(undefined, {})).toEqual(initialState)

@@ -1,4 +1,4 @@
-import {orderReducer} from './order';
+import {orderReducer, initialState} from './order';
 
 import {
     GET_ORDER,
@@ -11,11 +11,6 @@ import {
   const MOCK_ORDER = 7083;
 
   describe('order reducer', () => {
-    const initialState = {
-        orderRequest: false,
-        orderFailed: false,
-        order: null
-      };
     
     it('should return the initial state', () => {
       expect(orderReducer(undefined, {})).toEqual(initialState)

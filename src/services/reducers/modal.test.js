@@ -1,4 +1,4 @@
-import {modalReducer} from './modal';
+import {modalReducer, initialState} from './modal';
 import {
     ORDER_DETAILS,
     INGREDIENT_DETAILS,
@@ -27,15 +27,7 @@ import {
  const MOCK_BURGER = 7083;
 
   describe('modal reducer', () => {
-    const initialState = {
-        isIngredientsModalOpen: false,
-        isOrderDetailsModalOpen: false,
-        ingredient: null,
-        order: null,
-        isBurgerModalOpen: false,
-        burger: null
-      };
-    
+   
     it('should return the initial state', () => {
       expect(modalReducer(undefined, {})).toEqual(initialState)
     })
