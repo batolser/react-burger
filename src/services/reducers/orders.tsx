@@ -83,7 +83,7 @@ export const ordersReducer = (state = initialState, action: TWSActions): TSocket
     case GET_ORDER_INFO_SUCCESS: 
       return {
         ...state,
-        orderInfoRequest: true,
+        orderInfoRequest: false,
         orderInfo: action.payload,
       };
     case GET_ORDER_INFO_FAILED:
